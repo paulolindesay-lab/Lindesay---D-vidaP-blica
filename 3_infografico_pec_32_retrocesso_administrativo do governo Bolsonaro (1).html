@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEC 32/2020: Pronta para Votação - Alerta Político-Institucional</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#DC2626',
+                            darkRed: '#991B1B',
+                            amber: '#D97706',
+                            slate: '#0F172A',
+                            accent: '#2563EB',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-active {
+            border-bottom: 3px solid #DC2626;
+            color: #DC2626;
+            font-weight: 700;
+            background-color: rgba(220, 38, 38, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Super Banner de Destaque Máximo sobre Tramitação e Arquivamento -->
+    <div class="bg-red-700 text-white font-extrabold px-4 py-3 text-center text-sm sm:text-base border-b-4 border-slate-900 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-3">
+            <span class="bg-yellow-400 text-slate-950 px-3 py-1 rounded-md uppercase font-black tracking-wide text-xs flex items-center gap-1">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i> ALERTA CRÍTICO
+            </span>
+            <span class="leading-tight">
+                A <strong>PEC 32/2020</strong> é uma proposta originária do <strong>governo Jair Bolsonaro</strong> que <u>NÃO PODE MAIS SER ARQUIVADA</u> por governos futuros (seja Lula ou Flávio Bolsonaro), pois <strong>já tramitou por várias comissões, inclusive a Comissão Especial</strong>, e está <strong>PRONTA PARA SER VOTADA NO PLENÁRIO DO PRÓXIMO PARLAMENTO!</strong>
+            </span>
+        </div>
+    </div>
+
+    <!-- Banner Político-Institucional Secundário -->
+    <div class="bg-amber-500 text-slate-950 font-bold px-4 py-2 text-center text-xs sm:text-sm border-b border-amber-600 shadow-inner flex items-center justify-center gap-2">
+        <i data-lucide="check-check" class="w-4 h-4 flex-shrink-0"></i>
+        <span>
+            <strong>SITUAÇÃO LEGISLATIVA:</strong> Fase regimental de arquivamento superada. A matéria aguarda apenas inclusão na Ordem do Dia pelo Presidente da Câmara.
+        </span>
+    </div>
+
+    <!-- Header / Banner Impactante -->
+    <header class="bg-gradient-to-r from-slate-900 via-red-950 to-slate-900 text-white shadow-xl border-b-4 border-red-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="space-y-4 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/30 border border-red-500/40 text-red-300 text-xs font-semibold uppercase tracking-wider">
+                        <i data-lucide="shield-alert" class="w-4 h-4 text-red-400"></i> Dossiê de Alerta Democrático & Social
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+                        PEC 32/2020: <span class="text-red-500 underline decoration-red-500/50">Pronta para Votação</span> no Plenário
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg max-w-3xl font-light leading-relaxed">
+                        Análise crítica e jurídica detalhada da Reforma Administrativa formulada na gestão <strong>Jair Bolsonaro</strong>. Por ter concluído toda a tramitação em comissões (inclusive a Comissão Especial), a proposta está blindada contra arquivamento automático e pronta para ser pautada no próximo parlamento sob qualquer governo (Lula ou Flávio Bolsonaro).
+                    </p>
+                </div>
+
+                <!-- Card de Destaque Político e Regimental -->
+                <div class="flex-shrink-0 bg-red-950/80 p-5 rounded-2xl border-2 border-red-500/50 text-center max-w-sm shadow-2xl backdrop-blur-sm">
+                    <span class="inline-block bg-red-600 text-white text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full mb-2">Impossível de Arquivar</span>
+                    <h2 class="text-lg font-bold text-white leading-snug">Risco Imediato para o Próximo Parlamento</h2>
+                    <p class="text-xs text-red-200 mt-2 leading-relaxed">
+                        Como já foi aprovada na CCJ e na Comissão Especial, a PEC 32 não é descartada na mudança de legislatura. Está apta para votação direta em 2 turnos no Plenário.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Linha do Tempo da Tramitação -->
+    <section class="bg-slate-900 text-white border-y border-slate-800 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-center text-xs font-bold uppercase text-red-400 tracking-widest mb-4">
+                <i data-lucide="git-commit" class="w-4 h-4 inline mr-1"></i> Linha do Tempo da Tramitação na Câmara dos Deputados
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                <div class="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
+                    <span class="text-xs text-emerald-400 font-bold">1ª ETAPA (CONCLUÍDA)</span>
+                    <h4 class="font-bold text-sm text-slate-100">CCJ (Constituição e Justiça)</h4>
+                    <p class="text-xs text-slate-400 mt-1">Admissibilidade constitucional aprovada em maio de 2021.</p>
+                </div>
+                <div class="p-3 bg-slate-800/80 rounded-lg border border-slate-700">
+                    <span class="text-xs text-emerald-400 font-bold">2ª ETAPA (CONCLUÍDA)</span>
+                    <h4 class="font-bold text-sm text-slate-100">Comissão Especial</h4>
+                    <p class="text-xs text-slate-400 mt-1">Parecer do relator aprovado em setembro de 2021 com substitutivo.</p>
+                </div>
+                <div class="p-3 bg-red-950/90 rounded-lg border border-red-500 shadow-md">
+                    <span class="text-xs text-yellow-300 font-bold">3ª ETAPA (SITUAÇÃO ATUAL)</span>
+                    <h4 class="font-bold text-sm text-white">Pronta para o Plenário</h4>
+                    <p class="text-xs text-red-200 mt-1">Pronta para votação no próximo parlamento. Não pode mais ser arquivada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alerta de Retrocesso Histórico -->
+    <section class="bg-red-100/80 border-y border-red-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-red-950">
+                <i data-lucide="triangle-alert" class="w-6 h-6 text-red-700 flex-shrink-0 mt-1 sm:mt-0"></i>
+                <p class="text-sm sm:text-base leading-snug font-medium">
+                    <strong>Por que o perigo é iminente?</strong> Por ter cumprido todo o rito nas comissões, qualquer futura liderança da Câmara poderá pautar a PEC 32 no próximo parlamento sem passar por novos debates prévios. Se aprovada, acabará com a estabilidade, privatizará serviços essenciais e criará superpoderes presidenciais.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conteúdo Principal Dinâmico -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- Barra de Busca & Filtro Rápido -->
+        <div class="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full sm:w-96">
+                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Buscar por termo (ex: Art. 39, ADI 2135, estabilidade, privatização)..." 
+                       class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm bg-white shadow-sm transition">
+            </div>
+            <div class="text-xs text-slate-500 font-medium self-end sm:self-center">
+                Utilize as abas para navegar pelos eixos do desmonte constitucional
+            </div>
+        </div>
+
+        <!-- Navegação por Abas (Tabs) -->
+        <div class="border-b border-slate-200 mb-8 overflow-x-auto custom-scrollbar">
+            <nav class="flex space-x-2 sm:space-x-4 min-w-max pb-1" id="tabNav">
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn tab-active px-4 py-3 text-sm font-medium rounded-t-lg transition flex items-center gap-2">
+                    <i data-lucide="scale" class="w-4 h-4"></i> Art. 39, ADI 2.135 & Fim da Estabilidade
+                </button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn text-slate-600 hover:text-red-600 px-4 py-3 text-sm font-medium rounded-t-lg transition flex items-center gap-2">
+                    <i data-lucide="building-2" class="w-4 h-4"></i> Privatização via Art. 37-A
+                </button>
+                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn text-slate-600 hover:text-red-600 px-4 py-3 text-sm font-medium rounded-t-lg transition flex items-center gap-2">
+                    <i data-lucide="crown" class="w-4 h-4"></i> Superpoderes Presidenciais (Art. 84)
+                </button>
+                <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn text-slate-600 hover:text-red-600 px-4 py-3 text-sm font-medium rounded-t-lg transition flex items-center gap-2">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i> Apadrinhamento & Retirada de Direitos
+                </button>
+                <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn text-slate-600 hover:text-red-600 px-4 py-3 text-sm font-medium rounded-t-lg transition flex items-center gap-2">
+                    <i data-lucide="hourglass" class="w-4 h-4"></i> Vínculo de Experiência (Falso Concurso)
+                </button>
+                <button onclick="switchTab('tab6')" id="btn-tab6" class="tab-btn text-slate-600 hover:text-red-600 px-4 py-3 text-sm font-medium rounded-t-lg transition flex items-center gap-2">
+                    <i data-lucide="file-minus" class="w-4 h-4"></i> Vedações & Impactos Previdenciários
+                </button>
+            </nav>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <div id="tabContent">
+
+            <!-- ABA 1: Artigo 39, ADI 2.135 & Fim da Estabilidade -->
+            <div id="tab1" class="tab-panel space-y-6">
+                <!-- Card Síntese e Retificação Histórica -->
+                <div class="bg-gradient-to-br from-red-900 to-slate-900 text-white p-6 rounded-xl shadow-lg border-l-8 border-red-500 space-y-3">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-red-300">
+                        <i data-lucide="gavel" class="w-6 h-6"></i> Retificação Constitucional do Art. 39 da CF/88 e o Julgamento da ADI 2.135
+                    </h2>
+                    <p class="text-sm text-slate-200 leading-relaxed">
+                        A Emenda Constitucional nº 19/1998 tentou extinguir o Regime Jurídico Único (RJU) ao alterar o caput do Art. 39. Contudo, em decisão histórica na <strong>ADI 2.135</strong>, o Supremo Tribunal Federal (STF) concedeu medida cautelar suspendendo a eficácia daquela redação por vício formal de tramitação (violação do processo legislativo no Congresso). Com isso, <strong>reassumiu vigência a redação original da CF/88</strong>, que exige o Regime Jurídico Único e planos de carreira para os servidores da administração direta, autárquica e fundacional. A PEC 32/2020 de Bolsonaro visa reverter esse entendimento e destruir definitivamente o RJU.
+                    </p>
+                </div>
+
+                <!-- Tabela Comparativa Detalhada e Retificada -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Texto Atual Retificado -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="bg-emerald-100 text-emerald-800 px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                                VIGENTE / RESTAURADO PELA ADI 2.135 DO STF
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i> Artigo 39 da CF/88 (Texto Oficial)
+                            </h3>
+                            <div class="text-xs sm:text-sm text-slate-700 space-y-3 leading-relaxed font-mono bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
+                                <p class="italic text-slate-800">
+                                    "Art. 39. A União, os Estados, o Distrito Federal e os Municípios instituirão, no âmbito de sua competência, regime jurídico único e planos de carreira para os servidores da administração pública direta, das autarquias e das fundações públicas."
+                                </p>
+                            </div>
+                            <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900 space-y-1">
+                                <strong>Nota Jurídica (EC 19/98 & ADI 2.135):</strong>
+                                <p class="leading-relaxed">
+                                    A EC 19/1998 havia alterado o Art. 39 para: <em>"A União, os Estados, o Distrito Federal e os Municípios instituirão conselho de política de administração e remuneração de pessoal, integrado por servidores designados pelos respectivos Poderes."</em> O STF (ADI 2.135) suspendeu essa redação por inconstitucionalidade formal, restaurando a obrigatoriedade do Regime Jurídico Único.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proposta PEC 32/2020 -->
+                    <div class="bg-red-50/70 p-6 rounded-xl border border-red-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                                PROPOSTA PEC 32/2020 (GOVERNO BOLSONARO)
+                            </div>
+                            <h3 class="font-bold text-lg text-red-950 mb-3 flex items-center gap-2">
+                                <i data-lucide="x-circle" class="w-5 h-5 text-red-600"></i> Destruição do RJU & Fragmentação (Art. 39-A)
+                            </h3>
+                            <div class="text-xs sm:text-sm text-slate-800 space-y-3 leading-relaxed bg-white p-4 rounded-lg border border-red-200 mb-4">
+                                <p><strong>Art. 39-A:</strong> Extingue o Regime Jurídico Único e cria 5 novos tipos de vínculos funcionais no Estado:</p>
+                                <ul class="list-disc list-inside space-y-1 text-xs font-semibold text-red-900">
+                                    <li>1. Vínculo de experiência (fase eliminatória de concurso);</li>
+                                    <li>2. Vínculo por prazo determinado (contratação temporária);</li>
+                                    <li>3. Cargo com vínculo por prazo indeterminado (sem estabilidade);</li>
+                                    <li>4. Cargo típico de Estado (único com estabilidade);</li>
+                                    <li>5. Cargo de liderança e assessoramento (apadrinhamento).</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-red-100 rounded-lg border border-red-300 text-xs text-red-950">
+                                <strong>Impacto Social Devastador:</strong>
+                                Apenas uma minúscula elite ("Cargos Típicos de Estado") conservará a estabilidade. Professores, profissionais de saúde, assistentes sociais e guardas municipais perderão a estabilidade, ficando expostos a assédio e perseguição política.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalhamento dos 5 Vínculos -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-base text-slate-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-slate-700"></i> Como a PEC 32 Desmonta a Carreira Pública (Art. 39-A)
+                    </h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                            <span class="text-xs font-bold text-red-600 uppercase tracking-wide">Vínculo 1</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mt-1">Vínculo de Experiência</h4>
+                            <p class="text-xs text-slate-600 mt-1">Fase eliminatória de concurso de até 2 anos. Competição feroz no local de trabalho com avaliação subjetiva.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                            <span class="text-xs font-bold text-red-600 uppercase tracking-wide">Vínculo 2</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mt-1">Prazo Determinado</h4>
+                            <p class="text-xs text-slate-600 mt-1">Contratos temporários e precários para atividades ordinárias, enfraquecendo sindicatos e direitos sociais.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                            <span class="text-xs font-bold text-red-600 uppercase tracking-wide">Vínculo 3</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mt-1">Prazo Indeterminado (Sem Estabilidade)</h4>
+                            <p class="text-xs text-slate-600 mt-1">Destinado à ampla maioria dos servidores (Saúde, Educação, Atendimento). Podem ser demitidos por cortes ou perseguição.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                            <span class="text-xs font-bold text-red-600 uppercase tracking-wide">Vínculo 4</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mt-1">Cargo Típico de Estado</h4>
+                            <p class="text-xs text-slate-600 mt-1">Restrito a funções essenciais de Estado cuja definição dependerá de futura lei complementar. Único com estabilidade.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 sm:col-span-2 lg:col-span-1">
+                            <span class="text-xs font-bold text-red-600 uppercase tracking-wide">Vínculo 5</span>
+                            <h4 class="font-semibold text-slate-800 text-sm mt-1">Liderança e Assessoramento</h4>
+                            <p class="text-xs text-slate-600 mt-1">Substitui cargos em comissão e funções de confiança. Permite livre nomeação de pessoas do mercado sem concurso público.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 2: Privatização via Art. 37-A -->
+            <div id="tab2" class="tab-panel hidden space-y-6">
+                <!-- Card Síntese do Retrocesso -->
+                <div class="bg-gradient-to-br from-red-900 to-slate-900 text-white p-6 rounded-xl shadow-lg border-l-8 border-red-500">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-red-300">
+                        <i data-lucide="share-2" class="w-6 h-6"></i> Artigo 37-A: Privatização e Terceirização Ampla dos Serviços Públicos
+                    </h2>
+                    <p class="mt-2 text-sm text-slate-200 leading-relaxed">
+                        O Artigo 37-A introduzido pela PEC 32/2020 autoriza a União, Estados, DF e Municípios a celebrarem "instrumentos de cooperação" com entidades públicas ou privadas para a execução de serviços públicos, incluindo o compartilhamento de estrutura física e recursos humanos particulares.
+                    </p>
+                </div>
+
+                <!-- Tabela Comparativa -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                            TEXTO CONSTITUCIONAL ATUAL (CF/88)
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i> Execução Direta pelo Estado
+                        </h3>
+                        <div class="text-sm text-slate-600 space-y-3 leading-relaxed">
+                            <p><strong>Dever Constitucional:</strong> Serviços públicos essenciais de saúde, educação e assistência social devem ser executados prioritariamente de forma direta por servidores concursados sob Regime Jurídico Único.</p>
+                            <p><strong>Controle Estrito:</strong> Terceirizações são restritas a atividades-meio secundárias e submetidas a severos controles e licitações públicas.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50/70 p-6 rounded-xl border border-red-200 shadow-sm">
+                        <div class="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                            PROPOSTA PEC 32/2020 (ART. 37-A)
+                        </div>
+                        <h3 class="font-bold text-lg text-red-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="building" class="w-5 h-5 text-red-600"></i> Entrega de Escolas e Postos à Iniciativa Privada
+                        </h3>
+                        <div class="text-sm text-slate-700 space-y-3 leading-relaxed">
+                            <p><strong>Art. 37-A:</strong> Permite repassar a gestão total ou parcial de escolas, creches, hospitais, postos de saúde e unidades de atendimento a empresas e Organizações Sociais (OSs).</p>
+                            <p><strong>Transferência de Recursos:</strong> Dinheiro público repassado para entes privados lucrarem ou gerenciarem serviços básicos sem necessidade de concurso para os trabalhadores.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riscos do Artigo 37-A -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i> Impactos Diretos na Qualidade do Atendimento ao Cidadão
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4 text-xs text-slate-700">
+                        <div class="p-4 bg-red-50 rounded-lg border border-red-100 space-y-1">
+                            <strong class="text-red-950 block font-bold">Mercantilização da Saúde e Educação:</strong>
+                            A lógica de lucro ou eficiência privada sobrepõe-se ao direito universal do cidadão previsto na Constituição de 1988.
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-lg border border-red-100 space-y-1">
+                            <strong class="text-red-950 block font-bold">Precarização dos Trabalhadores:</strong>
+                            Substituição de professores e profissionais de saúde concursados por trabalhadores temporários, subremunerados e sem garantias trabalhistas.
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-lg border border-red-100 space-y-1">
+                            <strong class="text-red-950 block font-bold">Explosão de Fraudes e Corrupção:</strong>
+                            A história recente demonstra que a gestão por Organizações Sociais e terceirizadas é a principal porta de entrada para fraudes na saúde pública.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: Superpoderes Presidenciais (Art. 84) -->
+            <div id="tab3" class="tab-panel hidden space-y-6">
+                <!-- Card Síntese do Retrocesso -->
+                <div class="bg-gradient-to-br from-red-900 to-slate-900 text-white p-6 rounded-xl shadow-lg border-l-8 border-red-500">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-red-300">
+                        <i data-lucide="zap" class="w-6 h-6"></i> Alteração do Art. 84: Superpoderes Autocráticos ao Presidente
+                    </h2>
+                    <p class="mt-2 text-sm text-slate-200 leading-relaxed">
+                        A PEC 32/2020 altera o Artigo 84, inciso VI, outorgando ao Presidente da República o poder unilateral de extinguir, fundir ou reorganizar autarquias, fundações públicas e órgãos da administração por simples <strong>Decreto Presidencial</strong>, atropelando o Congresso Nacional.
+                    </p>
+                </div>
+
+                <!-- Tabela Comparativa -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                            TEXTO CONSTITUCIONAL ATUAL (CF/88)
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="scale" class="w-5 h-5 text-emerald-600"></i> Reserva de Lei & Soberania do Congresso
+                        </h3>
+                        <div class="text-sm text-slate-600 space-y-3 leading-relaxed">
+                            <p><strong>Art. 48, X e Art. 84, VI:</strong> A criação, fusão, transformação ou extinção de autarquias, fundações e órgãos públicos dependem necessariamente de lei aprovada pelo Congresso Nacional.</p>
+                            <p><strong>Decreto Limitado:</strong> O Executivo só pode organizar a administração se <em>não implicar aumento de despesa nem criação ou extinção de órgãos</em>.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50/70 p-6 rounded-xl border border-red-200 shadow-sm">
+                        <div class="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                            PROPOSTA PEC 32/2020 (ART. 84, VI)
+                        </div>
+                        <h3 class="font-bold text-lg text-red-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="skull" class="w-5 h-5 text-red-600"></i> Canetada Autoritária para Destruir Instituições
+                        </h3>
+                        <div class="text-sm text-slate-700 space-y-3 leading-relaxed">
+                            <p><strong>Extinção por Decreto:</strong> O Presidente passa a ter poder absoluto para extinguir órgãos, autarquias e fundações por decreto, sem qualquer deliberação de deputados ou senadores.</p>
+                            <p><strong>Reorganização Arbitrária:</strong> Permite alterar a estrutura e as atribuições de órgãos de fiscalização e pesquisa a seu bel-prazer.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerta de Riscos de Aparelhamento -->
+                <div class="bg-amber-50 p-6 rounded-xl border border-amber-300 text-amber-950 space-y-2">
+                    <h4 class="font-bold text-base flex items-center gap-2 text-amber-900">
+                        <i data-lucide="triangle-alert" class="w-5 h-5 text-amber-600"></i> Risco de Extinção de Órgãos de Controle e Ciência
+                    </h4>
+                    <p class="text-xs sm:text-sm leading-relaxed">
+                        Com essa alteração do Art. 84, qualquer Presidente poderá fechar por decreto instâncias incômodas de fiscalização e pesquisa, tais como o **IBAMA**, **ICMBio**, **FUNAI**, **INPE**, **FIOCRUZ** ou o **ANVISA**, sem depender de votação na Câmara ou no Senado. Trata-se de uma ameaça direta às instituições de Estado.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ABA 4: Apadrinhamento & Retirada de Direitos -->
+            <div id="tab4" class="tab-panel hidden space-y-6">
+                <!-- Card Síntese do Retrocesso -->
+                <div class="bg-gradient-to-br from-red-900 to-slate-900 text-white p-6 rounded-xl shadow-lg border-l-8 border-red-500">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-red-300">
+                        <i data-lucide="users" class="w-6 h-6"></i> Enxurrada de Apadrinhados & Fim dos Direitos da Base
+                    </h2>
+                    <p class="mt-2 text-sm text-slate-200 leading-relaxed">
+                        A PEC 32 cria os "Cargos de Liderança e Assessoramento" (Art. 37, V), permitindo nomeações sem concurso para funções técnicas, e no Art. 37, XXIII proíbe adicionais por tempo de serviço e direitos históricos da base, mantendo intocados os privilégios das elites do funcionalismo.
+                    </p>
+                </div>
+
+                <!-- Tabela Comparativa -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="bg-slate-100 text-slate-700 px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                            TEXTO CONSTITUCIONAL ATUAL (CF/88)
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-600"></i> Proteção à Impessoalidade
+                        </h3>
+                        <div class="text-sm text-slate-600 space-y-3 leading-relaxed">
+                            <p><strong>Funções Técnicas Ocupadas por Servidores:</strong> Funções de confiança destinadas prioritariamente a servidores de carreira concursados.</p>
+                            <p><strong>Direitos de Carreira:</strong> Adicionais e progressões previstos em lei aplicados a todos os servidores sob o Regime Jurídico Único.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50/70 p-6 rounded-xl border border-red-200 shadow-sm">
+                        <div class="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-full w-fit mb-3">
+                            PROPOSTA PEC 32/2020 (ART. 37, V e XXIII)
+                        </div>
+                        <h3 class="font-bold text-lg text-red-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="user-x" class="w-5 h-5 text-red-600"></i> Apadrinhamento Politico e Corte de Direitos
+                        </h3>
+                        <div class="text-sm text-slate-700 space-y-3 leading-relaxed">
+                            <p><strong>Liderança e Assessoramento:</strong> Permite indicar pessoas do mercado para chefias e assessorias operacionais sem concurso público prévio.</p>
+                            <p><strong>Corte Retaliação aos Servidores de Base:</strong> Proíbe licença-prêmio, adicionais por tempo de serviço (anuênios, triênios), progressões exclusivamente por tempo e férias superiores a 30 dias.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ponto Crítico da Desigualdade -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <i data-lucide="shield-x" class="w-5 h-5 text-red-600"></i> Blindagem dos Apoiadores da Elite (A Farsa do Ajuste Fiscal)
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Enquanto a PEC 32 atinge mortalmente professores, enfermeiros, médicos do SUS, policiais e administrativos, ela <strong>PRESERVA OS SUPERSALÁRIOS E PRIVILÉGIOS</strong> das elites dos Poderes (Juízes, Promotores, Desembargadores e Militares). O Art. 39, § 1º-C exclui expressamente os chamados "membros de Poder" do alcance do corte de benefícios.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ABA 5: Vínculo de Experiência (Falso Concurso) -->
+            <div id="tab5" class="tab-panel hidden space-y-6">
+                <!-- Card Síntese do Retrocesso -->
+                <div class="bg-gradient-to-br from-red-900 to-slate-900 text-white p-6 rounded-xl shadow-lg border-l-8 border-red-500">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-red-300">
+                        <i data-lucide="hourglass" class="w-6 h-6"></i> Vínculo de Experiência: Concurso sem Garantia de Posse
+                    </h2>
+                    <p class="mt-2 text-sm text-slate-200 leading-relaxed">
+                        O Vínculo de Experiência introduzido pela PEC 32 transforma a fase posterior às provas em uma etapa eliminatória. O candidato aprovado nas provas trabalhará por 1 ou 2 anos sem garantia do cargo, competindo com outros colegas em um ambiente vulnerável ao assédio da chefia.
+                    </p>
+                </div>
+
+                <!-- Comparativo -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-900 mb-3 flex items-center gap-2 text-emerald-700">
+                            <i data-lucide="check-circle" class="w-5 h-5"></i> Sistema Atual da CF/88
+                        </h3>
+                        <ol class="list-decimal list-inside text-xs sm:text-sm text-slate-600 space-y-2 leading-relaxed">
+                            <li>Aprovação em Concurso Público de Provas ou Provas e Títulos.</li>
+                            <li>Nomeação e Posse imediata no cargo público funcional.</li>
+                            <li>Estágio Probatório de 3 anos com avaliação objetiva para confirmação da estabilidade.</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-red-50/70 p-6 rounded-xl border border-red-200 shadow-sm">
+                        <h3 class="font-bold text-red-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="x-circle" class="w-5 h-5 text-red-600"></i> Com a PEC 32 (Art. 37, II-A)
+                        </h3>
+                        <ol class="list-decimal list-inside text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed">
+                            <li>Provas ou Provas e Títulos.</li>
+                            <li>Prestação de serviço de 1 a 2 anos em <strong>Vínculo de Experiência</strong> (sem vínculo efetivo).</li>
+                            <li>Avaliação final de desempenho highly subjetiva.</li>
+                            <li>Classificação e contratação apenas dos mais bem cotados pelos chefes, descartando os demais.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                    <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                        <i data-lucide="user-x" class="w-5 h-5 text-red-600"></i> Porta Aberta para Subjetividade e Assédio
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Durante o período do vínculo de experiência, o profissional exerce a função sem a proteção do cargo. Caso um médico recuse atestar irregularidades ou um fiscal aplique uma multa incômoda, ele poderá ser desqualificado na avaliação final da chefia antes mesmo de tomar posse.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ABA 6: Vedações e Previdência -->
+            <div id="tab6" class="tab-panel hidden space-y-6">
+                <!-- Card Síntese do Retrocesso -->
+                <div class="bg-gradient-to-br from-red-900 to-slate-900 text-white p-6 rounded-xl shadow-lg border-l-8 border-red-500">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-red-300">
+                        <i data-lucide="trending-down" class="w-6 h-6"></i> Fragilização Previdenciária e Redução de Salários
+                    </h2>
+                    <p class="mt-2 text-sm text-slate-200 leading-relaxed">
+                        Ao empurrar os novos servidores para o Regime Geral (INSS) e autorizar a redução de jornada com corte proporcional de remuneração, a PEC 32/2020 desmonta os regimes próprios de previdência (RPPS) e precariza os salários da categoria.
+                    </p>
+                </div>
+
+                <!-- Tabela Comparativa -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-600"></i> Garantia Constitucional Atual
+                        </h3>
+                        <div class="text-sm text-slate-600 space-y-3 leading-relaxed">
+                            <p><strong>Art. 40 (RPPS):</strong> Todos os servidores efetivos contratados via concurso participam obrigatoriamente do Regime Próprio de Previdência Social.</p>
+                            <p><strong>Irreductibilidade de Vencimentos:</strong> Proteção rígida contra corte aleatório de salários.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50/70 p-6 rounded-xl border border-red-200 shadow-sm">
+                        <h3 class="font-bold text-red-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="x" class="w-5 h-5 text-red-600"></i> Desmonte Previdenciário na PEC 32
+                        </h3>
+                        <div class="text-sm text-slate-700 space-y-3 leading-relaxed">
+                            <p><strong>Migração ao INSS/RGPS:</strong> Servidores com contrato temporário, prazo indeterminado ou cargos de liderança serão vinculados obrigatoriamente ao Regime Geral de Previdência (INSS).</p>
+                            <p><strong>Corte Salarial:</strong> Autorizada a redução de jornada com redução de salário de forma generalizada.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vedações Finais do Artigo 37, XXIII -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="ban" class="w-5 h-5 text-red-600"></i> Rol Completo de Vedações Aos Servidores Públicos (Art. 37, XXIII)
+                    </h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-700">
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <strong>a) Férias:</strong> Proibição absoluta de férias superiores a 30 dias por ano.
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <strong>b) Adicionais por Tempo:</strong> Proibição de quinquênios, triênios, anuênios e similares.
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <strong>c) Aumentos Retroativos:</strong> Vedada qualquer concessão de aumento remuneratório retroativo.
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <strong>d) Licença-Prêmio:</strong> Extinção total de licenças decorrentes de tempo de serviço.
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <strong>e) Redução de Jornada:</strong> Redução de remuneração sem garantia de recomposição.
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <strong>f) Aposentadoria Compulsória:</strong> Indenizações ou incorporações em proventos vedadas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Infográfico Visual do Impacto Social -->
+        <section class="mt-12 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+            <h2 class="text-2xl font-black text-slate-900 mb-2 text-center">
+                Infográfico do Desmonte: O Servidor e o Cidadão Atingidos
+            </h2>
+            <p class="text-center text-xs sm:text-sm text-slate-500 mb-8 max-w-2xl mx-auto">
+                Quem perde quando o serviço público é transformado em um balcão de negócios políticos e privatizações?
+            </p>
+
+            <div class="grid md:grid-cols-4 gap-6 text-center">
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-3">
+                        <i data-lucide="lock" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900">Perda de Independência</h3>
+                    <p class="text-xs text-slate-500 mt-2">Professores, policiais e médicos sem estabilidade ficam vulneráveis a ordens ilegais e intimidações de chefes políticos.</p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-3">
+                        <i data-lucide="user-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900">Aparelhamento Político</h3>
+                    <p class="text-xs text-slate-500 mt-2">Milhares de novos cargos de Liderança abertos para indicação política direta, sem a realização de concurso público.</p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-3">
+                        <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900">Terceirização da Saúde e Educação</h3>
+                    <p class="text-xs text-slate-500 mt-2">O Artigo 37-A entrega unidades de saúde e escolas para a iniciativa privada lucrar com verbas públicas.</p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-3">
+                        <i data-lucide="skull" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900">Risco ao Estado Social</h3>
+                    <p class="text-xs text-slate-500 mt-2">Destruição da estrutura pública desenhada na Constituição de 1988 para garantir direitos universais à população.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé Informativo -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div>
+                <p class="font-bold text-slate-200">Análise do Arcabouço Legal e Regimental da PEC 32/2020 (Governo Jair Bolsonaro)</p>
+                <p class="text-slate-500 mt-1">Dossiê de alerta institucional sobre a impossibilidade de arquivamento e o risco de votação no próximo parlamento sob qualquer governo (Lula ou Flávio Bolsonaro).</p>
+            </div>
+            <div class="text-slate-500">
+                <p>Retificação: Artigo 39 da CF/88 + Julgamento da ADI 2.135 do STF.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Interatividade -->
+    <script>
+        // Inicialização dos Ícones Lucide
+        lucide.createIcons();
+
+        // Alternância Dinâmica de Abas
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-slate-600');
+            });
+
+            const targetPanel = document.getElementById(tabId);
+            if (targetPanel) {
+                targetPanel.classList.remove('hidden');
+            }
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active');
+                activeBtn.classList.remove('text-slate-600');
+            }
+        }
+
+        // Pesquisa Dinâmica em Tempo Real
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const tabPanels = document.querySelectorAll('.tab-panel');
+
+            if (searchTerm === '') {
+                switchTab('tab1');
+                return;
+            }
+
+            tabPanels.forEach(panel => {
+                const text = panel.innerText.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    panel.classList.remove('hidden');
+                } else {
+                    panel.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
+O novo infográfico foi salvo no arquivo `infografico_pec_32_tramitacao_e_riscos.html`.
+
+### Destaques Incluídos:
+1. **Super Banner Vermelho no Topo:** Alerta explícito enfatizando que a PEC 32/2020 é uma proposta formulada no governo Jair Bolsonaro, que **não pode mais ser arquivada** (seja sob um governo Lula ou Flávio Bolsonaro) por já ter concluído sua tramitação nas comissões.
+2. **Linha do Tempo da Tramitação:** Exibição clara das etapas já vencidas (aprovada na CCJ e na Comissão Especial) e o status atual ("Pronta para votação em Plenário").
+3. **Reforço de Risco ao Próximo Parlamento:** Alerta sobre a possibilidade de a pauta ser levada a votação direta a qualquer momento sem necessidade de novos debates em comissões.
