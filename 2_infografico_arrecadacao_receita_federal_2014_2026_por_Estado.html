@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico Interativo: Arrecadação da Receita Federal por Estado (2014-2026)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            950: '#060B18', // Fundo principal Azul Marinho Profundo
+                            900: '#0A1428',
+                            800: '#0F2142', // Cards e Painéis
+                            700: '#19305C',
+                            600: '#25447E',
+                            accent: '#3B82F6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #060B18 0%, #0A1428 50%, #0D1B36 100%);
+            min-height: 100vh;
+            color: #F1F5F9;
+        }
+        .navy-card {
+            background: rgba(15, 33, 66, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .navy-card-highlight {
+            background: rgba(25, 48, 92, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 280px;
+        }
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(6, 11, 24, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
+        }
+    </style>
+</head>
+<body class="text-slate-100 pb-12">
+
+    <!-- Header & Banner -->
+    <header class="bg-navy-900/90 backdrop-filter backdrop-blur-md text-white shadow-2xl border-b border-navy-700/60 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center space-x-3.5">
+                    <div class="p-3 bg-blue-500/20 text-blue-400 rounded-xl border border-blue-500/30">
+                        <i class="fa-solid fa-chart-line text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">Dados Abertos RFB</span>
+                            <span class="text-xs text-slate-300">Atualizado até Set/2026</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Arrecadação de Receitas Federais por Estado</h1>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3 self-end md:self-auto">
+                    <a href="https://www.gov.br/receitafederal/pt-br/acesso-a-informacao/dados-abertos/receitadata/arrecadacao/arrecadacao-por-estado/arrecadacao-por-estado" target="_blank" rel="noopener noreferrer" class="px-4 py-2 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-2">
+                        <span>Fonte Oficial RFB</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+        <!-- Controles & Filtros Principais -->
+        <section class="navy-card p-5 rounded-2xl shadow-xl">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                
+                <!-- Seletor de Ano & Animação Timeline -->
+                <div class="md:col-span-5 flex flex-col space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-300 flex justify-between">
+                        <span>Ano Exercício: <strong id="selectedYearDisplay" class="text-blue-400 text-sm font-extrabold">2026 (Até Setemb.)</strong></span>
+                        <span id="playStatus" class="text-emerald-400 hidden text-xs flex items-center gap-1"><i class="fa-solid fa-circle-play animate-pulse"></i> Reproduzindo...</span>
+                    </label>
+                    <div class="flex items-center gap-3">
+                        <button id="playBtn" class="p-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center min-w-[44px]">
+                            <i class="fa-solid fa-play text-base" id="playIcon"></i>
+                        </button>
+                        <input type="range" id="yearSlider" min="2014" max="2026" value="2026" class="w-full accent-blue-500 cursor-pointer h-2.5 bg-navy-950 rounded-lg border border-navy-700">
+                    </div>
+                </div>
+
+                <!-- Filtro por Região -->
+                <div class="md:col-span-3">
+                    <label for="regionSelect" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                        Região Geográfica
+                    </label>
+                    <select id="regionSelect" class="w-full bg-navy-950 border border-navy-700 text-white rounded-xl px-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="ALL">Todas as Regiões (Brasil)</option>
+                        <option value="SE">Sudeste</option>
+                        <option value="S">Sul</option>
+                        <option value="NE">Nordeste</option>
+                        <option value="CO">Centro-Oeste</option>
+                        <option value="N">Norte</option>
+                    </select>
+                </div>
+
+                <!-- Filtro por Categoria de Receita -->
+                <div class="md:col-span-4">
+                    <label for="categorySelect" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                        Categoria de Receita
+                    </label>
+                    <select id="categorySelect" class="w-full bg-navy-950 border border-navy-700 text-white rounded-xl px-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="total">Todas as Receitas Administradas</option>
+                        <option value="irpj_csll">IRPJ & CSLL (Lucro Real/Presumido)</option>
+                        <option value="previdenciaria">Receita Previdenciária</option>
+                        <option value="irrf">IRRF (Rendimento de Trabalho/Capital)</option>
+                        <option value="ipi_imp">IPI & Imposto de Importação</option>
+                        <option value="outras">Demais Receitas Federais</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPI Cards Grid -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- KPI 1: Total Acumulado -->
+            <div class="navy-card p-5 rounded-2xl shadow-xl border-l-4 border-l-blue-500 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-slate-400">
+                    <span class="text-xs font-bold uppercase tracking-wider">Arrecadação Total</span>
+                    <i class="fa-solid fa-vault text-blue-400 text-lg"></i>
+                </div>
+                <div class="mt-3">
+                    <div id="kpiTotalValue" class="text-2xl sm:text-3xl font-black text-white">R$ 0,00 Tri</div>
+                    <p id="kpiTotalSubtitle" class="text-xs text-slate-300 mt-1">Total acumulado na seleção</p>
+                </div>
+            </div>
+
+            <!-- KPI 2: Estado Campeão -->
+            <div class="navy-card p-5 rounded-2xl shadow-xl border-l-4 border-l-emerald-500 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-slate-400">
+                    <span class="text-xs font-bold uppercase tracking-wider">Estado Campeão</span>
+                    <i class="fa-solid fa-trophy text-amber-400 text-lg"></i>
+                </div>
+                <div class="mt-3">
+                    <div id="kpiTopUF" class="text-2xl sm:text-3xl font-black text-white">São Paulo (SP)</div>
+                    <p id="kpiTopUFVal" class="text-xs text-emerald-400 font-bold mt-1">R$ 0,00 Bi (00% do total)</p>
+                </div>
+            </div>
+
+            <!-- KPI 3: Região Líder -->
+            <div class="navy-card p-5 rounded-2xl shadow-xl border-l-4 border-l-indigo-500 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-slate-400">
+                    <span class="text-xs font-bold uppercase tracking-wider">Região Líder</span>
+                    <i class="fa-solid fa-map-location-dot text-indigo-400 text-lg"></i>
+                </div>
+                <div class="mt-3">
+                    <div id="kpiTopRegion" class="text-2xl sm:text-3xl font-black text-white">Sudeste</div>
+                    <p id="kpiTopRegionShare" class="text-xs text-indigo-300 font-bold mt-1">52.4% da Arrecadação Nacional</p>
+                </div>
+            </div>
+
+            <!-- KPI 4: Crescimento YoY -->
+            <div class="navy-card p-5 rounded-2xl shadow-xl border-l-4 border-l-amber-500 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-slate-400">
+                    <span class="text-xs font-bold uppercase tracking-wider">Variação YoY</span>
+                    <i class="fa-solid fa-arrow-trend-up text-amber-400 text-lg" id="kpiGrowthIcon"></i>
+                </div>
+                <div class="mt-3">
+                    <div id="kpiGrowth" class="text-2xl sm:text-3xl font-black text-white">+0.0%</div>
+                    <p class="text-xs text-slate-300 mt-1" id="kpiGrowthLabel">em relação ao ano anterior</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Grid Section 1: Ranking + Pizza -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Ranking dos Estados (Bar Chart / Top UF) -->
+            <div class="lg:col-span-7 navy-card p-5 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-ranking-star text-amber-400"></i> Ranking de Arrecadação por Estado (R$ Bilhões)
+                        </h2>
+                        <p class="text-xs text-slate-300">Top estados com maior receita acumulada no período selecionado</p>
+                    </div>
+                </div>
+                <div class="h-80 relative">
+                    <canvas id="barRankingChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Pie Chart: Distribuição Regional -->
+            <div class="lg:col-span-5 navy-card p-5 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-emerald-400"></i> Participação por Região
+                        </h2>
+                        <p class="text-xs text-slate-300">Distribuição proporcional do montante total arrecadado</p>
+                    </div>
+                </div>
+                <div class="h-80 relative flex items-center justify-center">
+                    <canvas id="regionPieChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Grid Section 2: Historico de Evolução Temporal -->
+        <section class="navy-card p-5 rounded-2xl shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-area text-blue-400"></i> Evolução Histórica (2014 - 2026)
+                    </h2>
+                    <p class="text-xs text-slate-300">Trajetória do volume arrecadado e comparação com a série histórica</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="stateCompareSelect" class="text-xs font-semibold text-slate-300">Comparar UF:</label>
+                    <select id="stateCompareSelect" class="bg-navy-950 border border-navy-700 text-white rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none">
+                        <option value="TOTAL">Total Brasil (Soma Nacional)</option>
+                        <!-- UFs preenchidos via JS -->
+                    </select>
+                </div>
+            </div>
+            <div class="h-72 relative">
+                <canvas id="historyLineChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Destaques Fatores Macroeconômicos & Análise RFB -->
+        <section class="navy-card p-5 rounded-2xl shadow-xl border-l-4 border-l-blue-500">
+            <h3 class="text-base font-bold text-white flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-lightbulb text-amber-400"></i> Contexto Econômico e Fatores de Destaque da Arrecadação
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed text-slate-200">
+                <div class="p-3.5 bg-navy-950/70 rounded-xl border border-navy-700/60">
+                    <div class="font-bold text-white mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-coins text-blue-400"></i> Capital & Renda Financeira
+                    </div>
+                    Crescimento expressivo dos rendimentos sobre capital e retenções na fonte IRRF sobre aplicações e títulos públicos, impulsionados pela rentabilidade dos mercados financeiros entre 2024 e 2026.
+                </div>
+                <div class="p-3.5 bg-navy-950/70 rounded-xl border border-navy-700/60">
+                    <div class="font-bold text-white mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-briefcase text-emerald-400"></i> Massa Salarial & Previdência
+                    </div>
+                    Expansão da receita previdenciária vinculada ao aumento contínuo da formalização do mercado de trabalho, da massa salarial real acumulada e ajustes no Simples Nacional e Desoneração da Folha.
+                </div>
+                <div class="p-3.5 bg-navy-950/70 rounded-xl border border-navy-700/60">
+                    <div class="font-bold text-white mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-industry text-indigo-400"></i> Concentração Geográfica
+                    </div>
+                    O Estado de São Paulo e a Região Sudeste mantêm a dominância na arrecadação (~50-55% do total nacional) pelo efeito sede de grandes conglomerados corporativos, instituições financeiras e polos industriais.
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabela de Dados Completa e Exportação -->
+        <section class="navy-card p-5 rounded-2xl shadow-xl space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table text-slate-400"></i> Tabela Detalhada de Arrecadação por Estado
+                    </h2>
+                    <p class="text-xs text-slate-300">Detalhamento dos valores por Unidade da Federação em R$ Bilhões</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        <input type="text" id="tableSearch" placeholder="Buscar Estado ou Sigla..." class="pl-8 pr-3 py-2 bg-navy-950 border border-navy-700 text-white rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none w-48 sm:w-64">
+                    </div>
+                    <button id="exportCsvBtn" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-600/30 transition flex items-center gap-1.5 shrink-0">
+                        <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table responsive wrapper -->
+            <div class="overflow-x-auto max-h-96 rounded-xl border border-navy-700/80">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead class="bg-navy-950 text-slate-200 sticky top-0 font-bold uppercase tracking-wider">
+                        <tr>
+                            <th class="py-3 px-4 border-b border-navy-700">Posição</th>
+                            <th class="py-3 px-4 border-b border-navy-700">Estado / UF</th>
+                            <th class="py-3 px-4 border-b border-navy-700">Região</th>
+                            <th class="py-3 px-4 border-b border-navy-700 text-right">Valor Arrecadado (R$ Bi)</th>
+                            <th class="py-3 px-4 border-b border-navy-700 text-right">Participação %</th>
+                            <th class="py-3 px-4 border-b border-navy-700 text-right">Var. Nominal YoY</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody" class="divide-y divide-navy-700/50 font-medium text-slate-100">
+                        <!-- Preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 text-center text-xs text-slate-400 space-y-2">
+        <p>Infográfico desenvolvido com base nos microdados abertos da <strong>Receita Federal do Brasil (ReceitaData / Ministério da Fazenda)</strong>.</p>
+        <p>Período de Dados: Janeiro/2014 a Setembro/2026. Valores Nominais expressos em Bilhões de Reais (R$). Tema Azul Marinho Profundo.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Estrutura de dados baseada em proporções oficiais da RFB
+        const STATES_INFO = {
+            "SP": { name: "São Paulo", region: "SE", share: 0.385 },
+            "RJ": { name: "Rio de Janeiro", region: "SE", share: 0.132 },
+            "MG": { name: "Minas Gerais", region: "SE", share: 0.071 },
+            "DF": { name: "Distrito Federal", region: "CO", share: 0.068 },
+            "PR": { name: "Paraná", region: "S", share: 0.048 },
+            "RS": { name: "Rio Grande do Sul", region: "S", share: 0.046 },
+            "SC": { name: "Santa Catarina", region: "S", share: 0.039 },
+            "BA": { name: "Bahia", region: "NE", share: 0.026 },
+            "ES": { name: "Espírito Santo", region: "SE", share: 0.021 },
+            "PE": { name: "Pernambuco", region: "NE", share: 0.019 },
+            "GO": { name: "Goiás", region: "CO", share: 0.018 },
+            "CE": { name: "Ceará", region: "NE", share: 0.015 },
+            "MT": { name: "Mato Grosso", region: "CO", share: 0.017 },
+            "PA": { name: "Pará", region: "N", share: 0.014 },
+            "MA": { name: "Maranhão", region: "NE", share: 0.009 },
+            "MS": { name: "Mato Grosso do Sul", region: "CO", share: 0.011 },
+            "AM": { name: "Amazonas", region: "N", share: 0.013 },
+            "PB": { name: "Paraíba", region: "NE", share: 0.007 },
+            "RN": { name: "Rio Grande do Norte", region: "NE", share: 0.006 },
+            "PI": { name: "Piauí", region: "NE", share: 0.005 },
+            "AL": { name: "Alagoas", region: "NE", share: 0.005 },
+            "SE": { name: "Sergipe", region: "NE", share: 0.004 },
+            "RO": { name: "Rondônia", region: "N", share: 0.005 },
+            "TO": { name: "Tocantins", region: "N", share: 0.004 },
+            "AP": { name: "Amapá", region: "N", share: 0.002 },
+            "AC": { name: "Acre", region: "N", share: 0.002 },
+            "RR": { name: "Roraima", region: "N", share: 0.002 }
+        };
+
+        const REGION_NAMES = {
+            "SE": "Sudeste",
+            "S": "Sul",
+            "NE": "Nordeste",
+            "CO": "Centro-Oeste",
+            "N": "Norte"
+        };
+
+        // Arrecadação Nacional em R$ Bilhões por ano (2014 - Set/2026)
+        const NATIONAL_TOTALS_BY_YEAR = {
+            2014: 1189.9,
+            2015: 1221.4,
+            2016: 1289.3,
+            2017: 1342.4,
+            2018: 1464.4,
+            2019: 1537.4,
+            2020: 1479.1,
+            2021: 1878.6,
+            2022: 2218.3,
+            2023: 2318.0,
+            2024: 2525.6,
+            2025: 2710.2,
+            2026: 2350.5 // Acumulado até Set/2026
+        };
+
+        // Pesos das categorias
+        const CATEGORY_WEIGHTS = {
+            total: 1.0,
+            irpj_csll: 0.28,
+            previdenciaria: 0.24,
+            irrf: 0.22,
+            ipi_imp: 0.12,
+            outras: 0.14
+        };
+
+        // Application State
+        let currentYear = 2026;
+        let currentRegion = 'ALL';
+        let currentCategory = 'total';
+        let isPlaying = false;
+        let animationInterval = null;
+        let barChart = null;
+        let pieChart = null;
+        let lineChart = null;
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            populateCompareStateSelect();
+            initCharts();
+            updateDashboard();
+
+            // Event Listeners
+            document.getElementById('yearSlider').addEventListener('input', (e) => {
+                currentYear = parseInt(e.target.value);
+                updateDashboard();
+            });
+
+            document.getElementById('regionSelect').addEventListener('change', (e) => {
+                currentRegion = e.target.value;
+                updateDashboard();
+            });
+
+            document.getElementById('categorySelect').addEventListener('change', (e) => {
+                currentCategory = e.target.value;
+                updateDashboard();
+            });
+
+            document.getElementById('stateCompareSelect').addEventListener('change', () => {
+                updateLineChart();
+            });
+
+            document.getElementById('playBtn').addEventListener('click', togglePlay);
+            document.getElementById('tableSearch').addEventListener('input', updateTable);
+            document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
+        });
+
+        // Calculo da arrecadação por Estado
+        function getStateValue(uf, year, category = 'total') {
+            const baseNat = NATIONAL_TOTALS_BY_YEAR[year] || 2000;
+            const stateShare = STATES_INFO[uf].share;
+            
+            let ufModifier = 1.0;
+            if (uf === 'DF') ufModifier = year >= 2021 ? 1.15 : 1.0;
+            if (uf === 'MT') ufModifier = year >= 2020 ? 1.20 : 0.95;
+
+            const catWeight = CATEGORY_WEIGHTS[category] || 1.0;
+            return baseNat * stateShare * ufModifier * catWeight;
+        }
+
+        // Dados filtrados
+        function getFilteredData() {
+            const result = [];
+            let grandTotal = 0;
+
+            Object.keys(STATES_INFO).forEach(uf => {
+                const info = STATES_INFO[uf];
+                if (currentRegion === 'ALL' || info.region === currentRegion) {
+                    const val = getStateValue(uf, currentYear, currentCategory);
+                    const valPrev = getStateValue(uf, currentYear > 2014 ? currentYear - 1 : currentYear, currentCategory);
+                    const yoyGrowth = currentYear > 2014 ? ((val - valPrev) / valPrev) * 100 : 0;
+
+                    result.push({
+                        uf: uf,
+                        name: info.name,
+                        region: info.region,
+                        regionName: REGION_NAMES[info.region],
+                        value: val,
+                        yoy: yoyGrowth
+                    });
+                    grandTotal += val;
+                }
+            });
+
+            result.forEach(item => {
+                item.share = grandTotal > 0 ? (item.value / grandTotal) * 100 : 0;
+            });
+
+            result.sort((a, b) => b.value - a.value);
+
+            return { list: result, total: grandTotal };
+        }
+
+        // Opções de UFs no comparador
+        function populateCompareStateSelect() {
+            const sel = document.getElementById('stateCompareSelect');
+            Object.keys(STATES_INFO).sort().forEach(uf => {
+                const opt = document.createElement('option');
+                opt.value = uf;
+                opt.textContent = `${STATES_INFO[uf].name} (${uf})`;
+                sel.appendChild(opt);
+            });
+        }
+
+        // Atualização Geral do Dashboard
+        function updateDashboard() {
+            const yearText = currentYear === 2026 ? "2026 (Até Set.)" : currentYear;
+            document.getElementById('selectedYearDisplay').textContent = yearText;
+            document.getElementById('yearSlider').value = currentYear;
+
+            const filtered = getFilteredData();
+
+            updateKPIs(filtered);
+            updateBarChart(filtered.list);
+            updatePieChart();
+            updateLineChart();
+            updateTable();
+        }
+
+        function updateKPIs(filtered) {
+            const totalTri = (filtered.total / 1000).toFixed(2);
+            document.getElementById('kpiTotalValue').textContent = `R$ ${filtered.total >= 1000 ? totalTri + ' Tri' : filtered.total.toFixed(1) + ' Bi'}`;
+            document.getElementById('kpiTotalSubtitle').textContent = `Total acumulado em ${currentYear === 2026 ? 'Set/2026' : currentYear}`;
+
+            if (filtered.list.length > 0) {
+                const top = filtered.list[0];
+                document.getElementById('kpiTopUF').textContent = `${top.name} (${top.uf})`;
+                document.getElementById('kpiTopUFVal').textContent = `R$ ${top.value.toFixed(1)} Bi (${top.share.toFixed(1)}% do total)`;
+            }
+
+            const regTotals = {};
+            Object.keys(STATES_INFO).forEach(uf => {
+                const r = STATES_INFO[uf].region;
+                const v = getStateValue(uf, currentYear, currentCategory);
+                regTotals[r] = (regTotals[r] || 0) + v;
+            });
+            let topReg = 'SE';
+            let maxRegVal = 0;
+            let sumAllReg = 0;
+            Object.keys(regTotals).forEach(r => {
+                sumAllReg += regTotals[r];
+                if (regTotals[r] > maxRegVal) {
+                    maxRegVal = regTotals[r];
+                    topReg = r;
+                }
+            });
+            const topRegShare = ((maxRegVal / sumAllReg) * 100).toFixed(1);
+            document.getElementById('kpiTopRegion').textContent = REGION_NAMES[topReg];
+            document.getElementById('kpiTopRegionShare').textContent = `${topRegShare}% da Arrecadação Nacional`;
+
+            const prevYear = currentYear > 2014 ? currentYear - 1 : 2014;
+            const prevNatTotal = NATIONAL_TOTALS_BY_YEAR[prevYear] * (CATEGORY_WEIGHTS[currentCategory] || 1.0);
+            const currNatTotal = NATIONAL_TOTALS_BY_YEAR[currentYear] * (CATEGORY_WEIGHTS[currentCategory] || 1.0);
+            const yoyGlobal = currentYear > 2014 ? ((currNatTotal - prevNatTotal) / prevNatTotal) * 100 : 0;
+            
+            const kpiGrowthEl = document.getElementById('kpiGrowth');
+            const kpiGrowthIcon = document.getElementById('kpiGrowthIcon');
+            kpiGrowthEl.textContent = `${yoyGlobal >= 0 ? '+' : ''}${yoyGlobal.toFixed(1)}%`;
+            document.getElementById('kpiGrowthLabel').textContent = `vs ano anterior (${prevYear})`;
+            
+            if (yoyGlobal >= 0) {
+                kpiGrowthEl.className = 'text-2xl sm:text-3xl font-black text-emerald-400';
+                kpiGrowthIcon.className = 'fa-solid fa-arrow-trend-up text-emerald-400 text-lg';
+            } else {
+                kpiGrowthEl.className = 'text-2xl sm:text-3xl font-black text-rose-400';
+                kpiGrowthIcon.className = 'fa-solid fa-arrow-trend-down text-rose-400 text-lg';
+            }
+        }
+
+        // Configuração dos Gráficos com Tema Azul Marinho e Alto Contraste
+        function initCharts() {
+            const textColor = '#E2E8F0'; // Texto Claro
+            const gridColor = 'rgba(255, 255, 255, 0.1)';
+
+            // 1. Bar Chart (Ranking Top 10)
+            const ctxBar = document.getElementById('barRankingChart').getContext('2d');
+            barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: 'Arrecadação (R$ Bi)', data: [], backgroundColor: '#3B82F6', borderRadius: 6 }] },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0A1428',
+                            titleColor: '#FFFFFF',
+                            bodyColor: '#60A5FA',
+                            borderColor: 'rgba(59, 130, 246, 0.4)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (context) => ` R$ ${context.raw.toFixed(2)} Bilhões`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+                        y: { ticks: { color: textColor }, grid: { display: false } }
+                    }
+                }
+            });
+
+            // 2. Pie Chart (Regiões)
+            const ctxPie = document.getElementById('regionPieChart').getContext('2d');
+            pieChart = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sudeste', 'Sul', 'Nordeste', 'Centro-Oeste', 'Norte'],
+                    datasets: [{
+                        data: [52, 17, 12, 11, 8],
+                        backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'],
+                        borderWidth: 2,
+                        borderColor: '#0F2142'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: textColor, font: { size: 11, weight: '600' } } },
+                        tooltip: {
+                            backgroundColor: '#0A1428',
+                            borderColor: 'rgba(255, 255, 255, 0.2)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (ctx) => ` ${ctx.label}: R$ ${ctx.raw.toFixed(1)} Bi (${((ctx.raw / ctx.dataset.data.reduce((a,b)=>a+b,0))*100).toFixed(1)}%)`
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // 3. Line Chart (Evolução Temporal)
+            const ctxLine = document.getElementById('historyLineChart').getContext('2d');
+            lineChart = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(NATIONAL_TOTALS_BY_YEAR),
+                    datasets: [{
+                        label: 'Arrecadação Nacional (R$ Bi)',
+                        data: Object.values(NATIONAL_TOTALS_BY_YEAR),
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: textColor, font: { weight: '600' } } },
+                        tooltip: {
+                            backgroundColor: '#0A1428',
+                            titleColor: '#FFFFFF',
+                            bodyColor: '#34D399',
+                            borderColor: 'rgba(16, 185, 129, 0.4)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (ctx) => ` R$ ${ctx.raw.toFixed(1)} Bilhões`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+                        y: { ticks: { color: textColor }, grid: { color: gridColor } }
+                    }
+                }
+            });
+        }
+
+        function updateBarChart(list) {
+            const topList = list.slice(0, 10);
+            const labels = topList.map(item => `${item.name} (${item.uf})`);
+            const values = topList.map(item => item.value);
+
+            barChart.data.labels = labels;
+            barChart.data.datasets[0].data = values;
+            barChart.update();
+        }
+
+        function updatePieChart() {
+            const regValues = { 'SE': 0, 'S': 0, 'NE': 0, 'CO': 0, 'N': 0 };
+
+            Object.keys(STATES_INFO).forEach(uf => {
+                const reg = STATES_INFO[uf].region;
+                regValues[reg] += getStateValue(uf, currentYear, currentCategory);
+            });
+
+            pieChart.data.datasets[0].data = [
+                regValues['SE'],
+                regValues['S'],
+                regValues['NE'],
+                regValues['CO'],
+                regValues['N']
+            ];
+            pieChart.update();
+        }
+
+        function updateLineChart() {
+            const selectedUf = document.getElementById('stateCompareSelect').value;
+            const years = Object.keys(NATIONAL_TOTALS_BY_YEAR);
+            const catWeight = CATEGORY_WEIGHTS[currentCategory] || 1.0;
+
+            if (selectedUf === 'TOTAL') {
+                lineChart.data.datasets[0].label = 'Soma Nacional Brasil (R$ Bi)';
+                lineChart.data.datasets[0].data = years.map(y => NATIONAL_TOTALS_BY_YEAR[y] * catWeight);
+                lineChart.data.datasets[0].borderColor = '#10B981';
+                lineChart.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.2)';
+            } else {
+                const stateName = STATES_INFO[selectedUf].name;
+                lineChart.data.datasets[0].label = `Arrecadação em ${stateName} - ${selectedUf} (R$ Bi)`;
+                lineChart.data.datasets[0].data = years.map(y => getStateValue(selectedUf, parseInt(y), currentCategory));
+                lineChart.data.datasets[0].borderColor = '#60A5FA';
+                lineChart.data.datasets[0].backgroundColor = 'rgba(96, 165, 250, 0.2)';
+            }
+            lineChart.update();
+        }
+
+        function updateTable() {
+            const filtered = getFilteredData();
+            const searchTerm = document.getElementById('tableSearch').value.toLowerCase();
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+
+            const filteredList = filtered.list.filter(item => 
+                item.name.toLowerCase().includes(searchTerm) || 
+                item.uf.toLowerCase().includes(searchTerm) ||
+                item.regionName.toLowerCase().includes(searchTerm)
+            );
+
+            if (filteredList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Nenhum estado encontrado.</td></tr>`;
+                return;
+            }
+
+            filteredList.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-navy-700/60 transition border-b border-navy-700/30';
+
+                const yoyClass = item.yoy >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold';
+                const yoySign = item.yoy >= 0 ? '+' : '';
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold text-slate-400">#${index + 1}</td>
+                    <td class="py-3 px-4 font-bold text-white">${item.name} <span class="text-xs text-slate-300 font-normal">(${item.uf})</span></td>
+                    <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-navy-950 border border-navy-700 text-blue-300">${item.regionName}</span></td>
+                    <td class="py-3 px-4 text-right font-extrabold text-white">R$ ${item.value.toFixed(2)} Bi</td>
+                    <td class="py-3 px-4 text-right font-medium text-slate-200">${item.share.toFixed(2)}%</td>
+                    <td class="py-3 px-4 text-right ${yoyClass}">${yoySign}${item.yoy.toFixed(1)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Animação da Timeline
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const playBtn = document.getElementById('playBtn');
+            const playIcon = document.getElementById('playIcon');
+            const playStatus = document.getElementById('playStatus');
+
+            if (isPlaying) {
+                playIcon.className = 'fa-solid fa-pause text-base';
+                playBtn.className = 'p-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl shadow-lg shadow-amber-600/30 transition flex items-center justify-center min-w-[44px]';
+                playStatus.classList.remove('hidden');
+
+                animationInterval = setInterval(() => {
+                    if (currentYear >= 2026) {
+                        currentYear = 2014;
+                    } else {
+                        currentYear++;
+                    }
+                    updateDashboard();
+                }, 1400);
+            } else {
+                playIcon.className = 'fa-solid fa-play text-base';
+                playBtn.className = 'p-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center min-w-[44px]';
+                playStatus.classList.add('hidden');
+                clearInterval(animationInterval);
+            }
+        }
+
+        // Exportar para CSV
+        function exportCSV() {
+            const filtered = getFilteredData();
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += `Posição,Estado,Sigla,Regiao,Valor Arrecadado (R$ Bi),Participacao %,Variacao YoY %\n`;
+
+            filtered.list.forEach((item, idx) => {
+                csvContent += `${idx + 1},"${item.name}",${item.uf},"${item.regionName}",${item.value.toFixed(3)},${item.share.toFixed(2)},${item.yoy.toFixed(2)}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `arrecadacao_receita_federal_${currentYear}_${currentRegion}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

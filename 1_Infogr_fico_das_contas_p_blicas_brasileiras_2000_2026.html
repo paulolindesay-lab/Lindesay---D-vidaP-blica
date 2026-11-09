@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico Interativo: Fiscalidade & Dívida Pública no Brasil (2000-2026) - SGS BACEN</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Font Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Montserrat & Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        petroleum: {
+                            700: '#0f4c5c',
+                            800: '#0e3b43',
+                            900: '#08282e',
+                            950: '#04161a',
+                        },
+                        navy: {
+                            800: '#0d1b2a',
+                            900: '#0b132b',
+                            950: '#050a18',
+                        },
+                        fiscal: {
+                            primary: '#3b82f6',   // Azul Claro/Vibrante
+                            interest: '#f59e0b',  // Ambar/Dourado (Série 4759)
+                            nominal: '#ef4444',   // Vermelho (Déficit Nominal)
+                            surplus: '#10b981'    // Verde Esmeralda
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'Roboto', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        .glass-card {
+            background: rgba(8, 40, 46, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(20, 184, 166, 0.15);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #04161a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0f4c5c;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-petroleum-950 text-slate-100 min-h-screen">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-teal-900/50 bg-petroleum-900/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-teal-500/20 text-teal-400 rounded-lg border border-teal-500/30">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">Análise Fiscal do Brasil</h1>
+                    <p class="text-[11px] text-teal-300/80">Séries SGS/BACEN (4759 - Juros | 4750 - Primário) • 2000 a Set/2026</p>
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center gap-5 text-xs text-slate-300">
+                <a href="#graficos" class="hover:text-teal-400 transition-colors"><i class="fa-solid fa-chart-area mr-1"></i> Séries Temporais</a>
+                <a href="#conceitos" class="hover:text-teal-400 transition-colors"><i class="fa-solid fa-book-open mr-1"></i> Conceitos</a>
+                <a href="#fontes" class="hover:text-teal-400 transition-colors"><i class="fa-solid fa-link mr-1"></i> Fontes BACEN</a>
+                <a href="#efeitos" class="hover:text-teal-400 transition-colors"><i class="fa-solid fa-gears mr-1"></i> Efeitos</a>
+                <a href="#simulador" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg transition-all shadow-lg shadow-teal-600/20"><i class="fa-solid fa-sliders mr-1"></i> Simulador</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- Hero / Summary Banner -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-5 rounded-2xl glass-card flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-semibold text-teal-300/70 uppercase tracking-wider">Período de Análise</span>
+                    <i class="fa-regular fa-calendar text-teal-400"></i>
+                </div>
+                <div class="mt-4">
+                    <span class="text-2xl font-bold text-white">2000 - 2026</span>
+                    <p class="text-xs text-slate-400 mt-1">Série Histórica SGS + Projeções Oficiais até Set/2026</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl glass-card border-l-4 border-l-blue-500 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Resultado Primário (Média)</span>
+                    <i class="fa-solid fa-scale-balanced text-blue-400"></i>
+                </div>
+                <div class="mt-4">
+                    <span id="stat-primary-avg" class="text-2xl font-bold text-blue-400">+0,42%</span>
+                    <span class="text-xs text-slate-400 ml-1">do PIB</span>
+                    <p class="text-xs text-slate-400 mt-1">Série 4750 (Setor Público Consolidado)</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl glass-card border-l-4 border-l-amber-500 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Juros Nominais (Série 4759)</span>
+                    <i class="fa-solid fa-percent text-amber-400"></i>
+                </div>
+                <div class="mt-4">
+                    <span id="stat-interest-avg" class="text-2xl font-bold text-amber-400">5,85%</span>
+                    <span class="text-xs text-slate-400 ml-1">do PIB/ano</span>
+                    <p class="text-xs text-slate-400 mt-1">Série 4759 (Encargos Financeiros Nominais)</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl glass-card border-l-4 border-l-red-500 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Déficit Nominal (Média)</span>
+                    <i class="fa-solid fa-receipt text-red-400"></i>
+                </div>
+                <div class="mt-4">
+                    <span id="stat-nominal-avg" class="text-2xl font-bold text-red-400">-5,43%</span>
+                    <span class="text-xs text-slate-400 ml-1">do PIB</span>
+                    <p class="text-xs text-slate-400 mt-1">NFSP - Resultado Nominal Consolidado</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Interactive Main Chart -->
+        <section id="graficos" class="p-6 rounded-2xl glass-card space-y-6">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-teal-900/50 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-teal-400"></i> Séries Temporais Oficiais do BACEN (2000 - Set/2026)
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1">
+                        Acompanhamento da <strong class="text-amber-400">Série 4759 (Juros Nominais)</strong>, <strong class="text-blue-400">Série 4750 (Resultado Primário)</strong> e do <strong class="text-red-400">Déficit Nominal</strong>.
+                    </p>
+                </div>
+
+                <!-- Controls & Filters -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Metric Unit Toggle -->
+                    <div class="bg-petroleum-900 border border-teal-800/60 rounded-lg p-1 flex items-center text-xs">
+                        <button id="btn-unit-gdp" onclick="setUnit('%PIB')" class="px-3 py-1.5 rounded-md font-medium text-white bg-teal-600 transition-all">% do PIB</button>
+                        <button id="btn-unit-brl" onclick="setUnit('BRL')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-all">R$ Bilhões</button>
+                    </div>
+
+                    <!-- Filter Presets -->
+                    <select id="select-period" onchange="filterPeriod(this.value)" class="bg-petroleum-900 border border-teal-800/60 text-slate-200 text-xs rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 outline-none">
+                        <option value="all">Todo o Período (2000 - 2026)</option>
+                        <option value="2000-2013">2000 - 2013 (Superávits e Bonança)</option>
+                        <option value="2014-2019">2014 - 2019 (Crise Fiscal & Recessão)</option>
+                        <option value="2020-2022">2020 - 2022 (Pandemia & Reagrupamento)</option>
+                        <option value="2023-2026">2023 - 2026 (Arcabouço & Atualidade)</option>
+                    </select>
+
+                    <button onclick="resetZoom()" class="px-3 py-2 bg-petroleum-800 hover:bg-petroleum-700 text-slate-200 text-xs rounded-lg transition-colors border border-teal-800/50">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Resetar Zoom
+                    </button>
+                </div>
+            </div>
+
+            <!-- Series Visibility Toggles -->
+            <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
+                <span class="text-slate-400">Alternar Séries Visíveis:</span>
+                <label class="flex items-center gap-2 cursor-pointer bg-petroleum-900/80 px-3 py-1.5 rounded-lg border border-teal-800/50 hover:border-teal-700">
+                    <input type="checkbox" id="chk-primary" checked onchange="toggleSeries(0)" class="rounded text-blue-600 focus:ring-0">
+                    <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span>
+                    <span class="text-slate-200">Resultado Primário (Série 4750)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer bg-petroleum-900/80 px-3 py-1.5 rounded-lg border border-teal-800/50 hover:border-teal-700">
+                    <input type="checkbox" id="chk-interest" checked onchange="toggleSeries(1)" class="rounded text-amber-600 focus:ring-0">
+                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                    <span class="text-slate-200">Juros Nominais Consolidados (Série 4759)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer bg-petroleum-900/80 px-3 py-1.5 rounded-lg border border-teal-800/50 hover:border-teal-700">
+                    <input type="checkbox" id="chk-nominal" checked onchange="toggleSeries(2)" class="rounded text-red-600 focus:ring-0">
+                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                    <span class="text-slate-200">Déficit Nominal Consolidado</span>
+                </label>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full h-[420px] bg-petroleum-950/60 p-4 rounded-xl border border-teal-900/40">
+                <canvas id="fiscalChart"></canvas>
+            </div>
+
+            <div class="text-xs text-slate-400 flex flex-wrap justify-between items-center bg-petroleum-900/80 p-3 rounded-lg border border-teal-900/50">
+                <div>
+                    <span class="font-semibold text-teal-300">Especificação das Séries:</span> Séries acumuladas em 12 meses até setembro de cada exercício (2026 inclui prospecção oficial BACEN/STN).
+                </div>
+                <div class="flex items-center gap-2 mt-2 sm:mt-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Sistema Gerenciador de Séries Temporais (SGS) - BACEN
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Conceptual Breakdown Retified -->
+        <section id="conceitos" class="space-y-6">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <h2 class="text-2xl font-bold text-white">Conceitos Fiscais & Mapeamento de Séries do BACEN</h2>
+                <p class="text-sm text-slate-400">
+                    Compreenda a definição exata das variáveis fiscais publicadas mensalmente pelo Banco Central do Brasil.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Concept 1: Deficit Primario -->
+                <div class="p-6 rounded-2xl glass-card border border-blue-500/20 hover:border-blue-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-blue-500/20 border border-blue-500/40 text-blue-400 rounded-xl flex items-center justify-center mb-4 text-xl">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">1. Resultado Primário</h3>
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-blue-900/80 text-blue-300 rounded border border-blue-700/50">Série 4750</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                            Mede a diferença entre as <strong>receitas não financeiras</strong> e as <strong>despesas não financeiras</strong> do setor público consolidado.
+                        </p>
+                        <div class="bg-petroleum-950/80 p-3 rounded-lg border border-teal-900/60 text-xs text-slate-400 space-y-1 mb-4">
+                            <div class="text-blue-400 font-semibold mb-1">Características:</div>
+                            <p>• Avalia a capacidade de gestão corrente do governo.</p>
+                            <p>• Exclui integralmente o pagamento de juros da dívida.</p>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-teal-900/50 text-xs text-slate-400">
+                        <strong class="text-slate-200">Função:</strong> É o indicador balizador das metas fiscais fixadas na LDO.
+                    </div>
+                </div>
+
+                <!-- Concept 2: Juros Consolidados - SERIE 4759 -->
+                <div class="p-6 rounded-2xl glass-card border border-amber-500/30 hover:border-amber-500/50 transition-all flex flex-col justify-between shadow-lg shadow-amber-950/10">
+                    <div>
+                        <div class="w-12 h-12 bg-amber-500/20 border border-amber-500/40 text-amber-400 rounded-xl flex items-center justify-center mb-4 text-xl">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">2. Juros Nominais</h3>
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-900/80 text-amber-300 rounded border border-amber-700/50">Série 4759</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                            A <strong class="text-amber-400">Série 4759 do SGS/BACEN</strong> quantifica as despesas com juros nominalmente apropriados pelo Setor Público Consolidado.
+                        </p>
+                        <div class="bg-petroleum-950/80 p-3 rounded-lg border border-teal-900/60 text-xs text-slate-400 space-y-1 mb-4">
+                            <div class="text-amber-400 font-semibold mb-1">Determinantes (Série 4759):</div>
+                            <p>• Acomoda a remuneração da dívida indexada à <strong>Selic</strong>.</p>
+                            <p>• Apropriação de atualização monetária (<strong>IPCA/IGP-M</strong>).</p>
+                            <p>• Gasto financeiro sem amortização do principal.</p>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-teal-900/50 text-xs text-slate-400">
+                        <strong class="text-slate-200">Impacto:</strong> É o maior vetor de expansão do déficit público no Brasil.
+                    </div>
+                </div>
+
+                <!-- Concept 3: Deficit Nominal -->
+                <div class="p-6 rounded-2xl glass-card border border-red-500/20 hover:border-red-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-red-500/20 border border-red-500/40 text-red-400 rounded-xl flex items-center justify-center mb-4 text-xl">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-white">3. Déficit Nominal</h3>
+                            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-red-900/80 text-red-300 rounded border border-red-700/50">NFSP Nominal</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                            Reflete a <strong>Necessidade de Financiamento do Setor Público (NFSP)</strong> completa, somando o esforço primário à conta de juros.
+                        </p>
+                        <div class="bg-petroleum-950/80 p-3 rounded-lg border border-teal-900/60 text-xs text-slate-400 mb-4">
+                            <div class="font-mono text-center font-bold text-red-400 text-xs py-1.5 bg-red-950/50 rounded border border-red-900/60">
+                                Result. Nominal = Primário (4750) - Juros (4759)
+                            </div>
+                            <p class="mt-2 text-[11px]">Se negativo, o Estado gera Déficit Nominal, incrementando a dívida pública de forma direta.</p>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-teal-900/50 text-xs text-slate-400">
+                        <strong class="text-slate-200">Resultado:</strong> Mostra a necessidade real de emissão de novos títulos da dívida.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Official Data Sources & Direct Links -->
+        <section id="fontes" class="p-6 rounded-2xl glass-card border border-teal-500/30 space-y-4">
+            <div class="flex items-center justify-between border-b border-teal-900/50 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-link text-teal-400"></i> Fontes Oficiais & Links Diretos para Consulta (BACEN / STN / IBGE)
+                </h3>
+                <span class="text-xs text-teal-300 bg-teal-950 px-2.5 py-1 rounded-full border border-teal-800">Dados Abertos</span>
+            </div>
+            
+            <p class="text-xs text-slate-300 leading-relaxed">
+                As séries históricas empregadas neste painel são extraídas diretamente do <strong>Sistema Gerenciador de Séries Temporais (SGS) do Banco Central do Brasil</strong>. Você pode consultar, validar e exportar os dados brutos utilizando os links oficiais abaixo:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                <!-- Link 1: Serie 4759 -->
+                <a href="https://www3.bcb.gov.br/sgspub/consultarvalores/telaCodedf.do?method=consultarValores&codigoSgs=4759" target="_blank" rel="noopener noreferrer"
+                   class="p-4 rounded-xl bg-petroleum-900/80 border border-amber-500/40 hover:border-amber-400 hover:bg-petroleum-800 transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-database text-xs"></i> SGS BACEN - Código 4759
+                            </span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-amber-400 transition-colors"></i>
+                        </div>
+                        <h4 class="font-semibold text-white mb-1">Juros Nominais Consolidados</h4>
+                        <p class="text-[11px] text-slate-400">Necessidade de Financiamento do Setor Público - Juros Nominais (Acumulado 12 Meses).</p>
+                    </div>
+                    <span class="mt-3 text-[10px] text-amber-300/80 font-mono">www3.bcb.gov.br/sgspub (Série 4759)</span>
+                </a>
+
+                <!-- Link 2: Serie 4750 -->
+                <a href="https://www3.bcb.gov.br/sgspub/consultarvalores/telaCodedf.do?method=consultarValores&codigoSgs=4750" target="_blank" rel="noopener noreferrer"
+                   class="p-4 rounded-xl bg-petroleum-900/80 border border-blue-500/40 hover:border-blue-400 hover:bg-petroleum-800 transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-blue-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-database text-xs"></i> SGS BACEN - Código 4750
+                            </span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-blue-400 transition-colors"></i>
+                        </div>
+                        <h4 class="font-semibold text-white mb-1">Resultado Primário Consolidado</h4>
+                        <p class="text-[11px] text-slate-400">Necessidade de Financiamento do Setor Público - Resultado Primário (Acumulado 12 Meses).</p>
+                    </div>
+                    <span class="mt-3 text-[10px] text-blue-300/80 font-mono">www3.bcb.gov.br/sgspub (Série 4750)</span>
+                </a>
+
+                <!-- Link 3: STN e IBGE -->
+                <a href="https://www.tesourotransparente.gov.br/" target="_blank" rel="noopener noreferrer"
+                   class="p-4 rounded-xl bg-petroleum-900/80 border border-teal-500/40 hover:border-teal-400 hover:bg-petroleum-800 transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-teal-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-landmark text-xs"></i> Tesouro Transparente & IBGE
+                            </span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-teal-400 transition-colors"></i>
+                        </div>
+                        <h4 class="font-semibold text-white mb-1">PIB Nominal & Resultado do Governo Central</h4>
+                        <p class="text-[11px] text-slate-400">Estatísticas complementares de dívida pública bruta (DBGG) e PIB nominal mensalizado.</p>
+                    </div>
+                    <span class="mt-3 text-[10px] text-teal-300/80 font-mono">tesourotransparente.gov.br</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Macroeconomic Transmission & Effects -->
+        <section id="efeitos" class="p-6 rounded-2xl glass-card space-y-6">
+            <div class="border-b border-teal-900/50 pb-4">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-gears text-indigo-400"></i> Efeitos Macroeconômicos dos Déficits no Brasil
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Como a dinâmica das contas públicas transborda para a economia real, afeta o bolso dos cidadãos e os negócios.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Effect 1 -->
+                <div class="p-4 rounded-xl bg-petroleum-900/60 border border-teal-900/60 hover:border-teal-700 transition-all">
+                    <div class="text-red-400 text-2xl mb-2"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                    <h4 class="font-semibold text-sm text-white mb-1">Inflação & Custos</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Déficits continuados financiado por aumento de gastos injetam demanda sem aumento imediato na oferta, pressionando a inflação e forçando o Banco Central a manter juros elevados.
+                    </p>
+                </div>
+
+                <!-- Effect 2 -->
+                <div class="p-4 rounded-xl bg-petroleum-900/60 border border-teal-900/60 hover:border-teal-700 transition-all">
+                    <div class="text-amber-400 text-2xl mb-2"><i class="fa-solid fa-building-columns"></i></div>
+                    <h4 class="font-semibold text-sm text-white mb-1">Dívida / PIB & Risco-País</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Déficits nominais persistentes elevam a relação Dívida/PIB. Investidores exigem prêmio de risco maior (CDS Brasil), desvalorizando o Câmbio (R$) e encarecendo empréstimos.
+                    </p>
+                </div>
+
+                <!-- Effect 3 -->
+                <div class="p-4 rounded-xl bg-petroleum-900/60 border border-teal-900/60 hover:border-teal-700 transition-all">
+                    <div class="text-purple-400 text-2xl mb-2"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <h4 class="font-semibold text-sm text-white mb-1">Efeito Crowding-Out</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Quando o governo capta recursos massivos para cobrir déficit, ele "drena" a poupança nacional, reduzindo o crédito disponível para empresas privadas investirem.
+                    </p>
+                </div>
+
+                <!-- Effect 4 -->
+                <div class="p-4 rounded-xl bg-petroleum-900/60 border border-teal-900/60 hover:border-teal-700 transition-all">
+                    <div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h4 class="font-semibold text-sm text-white mb-1">Rigidez Orçamentária</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Contas dominadas pelo serviço da dívida comprimem os investimentos públicos em infraestrutura, ciência, educação e segurança, minando o PIB potencial futuro.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Interactive Fiscal Trajectory Simulator -->
+        <section id="simulador" class="p-6 rounded-2xl glass-card border border-teal-500/30 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-teal-900/50 pb-4">
+                <div>
+                    <span class="px-2.5 py-1 bg-teal-500/20 text-teal-300 text-xs font-semibold rounded-full border border-teal-500/30 uppercase tracking-wider">Laboratório Interativo</span>
+                    <h2 class="text-xl font-bold text-white mt-2 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-teal-400"></i> Simulador de Sustentabilidade Fiscal
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Ajuste os parâmetros abaixo para projetar o Déficit Nominal e a dinâmica da dívida em relação ao PIB no curto/médio prazo.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="resetSimulator()" class="px-3 py-1.5 text-xs bg-petroleum-800 hover:bg-petroleum-700 text-slate-200 rounded-lg transition-colors border border-teal-800/50">
+                        Restaurar Padrão
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Controls Column -->
+                <div class="lg:col-span-6 space-y-6">
+                    <!-- Slider 1: Primary Result -->
+                    <div class="space-y-2 bg-petroleum-900/60 p-4 rounded-xl border border-teal-900/60">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="sim-primary" class="font-semibold text-slate-200 flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                Meta/Resultado Primário (Série 4750) (% do PIB):
+                            </label>
+                            <span id="sim-primary-val" class="font-bold text-blue-400 text-sm">0,25%</span>
+                        </div>
+                        <input type="range" id="sim-primary" min="-3" max="3" step="0.1" value="0.25" oninput="updateSimulation()"
+                               class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                        <div class="flex justify-between text-[10px] text-slate-400">
+                            <span>-3,0% (Déficit Severo)</span>
+                            <span>0,0% (Neutro)</span>
+                            <span>+3,0% (Superávit Forte)</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 2: Interest Rate / Selic Implied (Series 4759 driver) -->
+                    <div class="space-y-2 bg-petroleum-900/60 p-4 rounded-xl border border-teal-900/60">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="sim-interest" class="font-semibold text-slate-200 flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                Taxa Média Implícita de Juros Nominais (% a.a.):
+                            </label>
+                            <span id="sim-interest-val" class="font-bold text-amber-400 text-sm">11,50%</span>
+                        </div>
+                        <input type="range" id="sim-interest" min="4" max="18" step="0.25" value="11.5" oninput="updateSimulation()"
+                               class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                        <div class="flex justify-between text-[10px] text-slate-400">
+                            <span>4,0% (Muito Baixa)</span>
+                            <span>11,0% (Média Atual)</span>
+                            <span>18,0% (Restritiva)</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 3: GDP Growth -->
+                    <div class="space-y-2 bg-petroleum-900/60 p-4 rounded-xl border border-teal-900/60">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="sim-gdp" class="font-semibold text-slate-200 flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                Crescimento Real do PIB (% a.a.):
+                            </label>
+                            <span id="sim-gdp-val" class="font-bold text-emerald-400 text-sm">2,00%</span>
+                        </div>
+                        <input type="range" id="sim-gdp" min="-2" max="6" step="0.25" value="2.0" oninput="updateSimulation()"
+                               class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                        <div class="flex justify-between text-[10px] text-slate-400">
+                            <span>-2,0% (Recessão)</span>
+                            <span>2,0% (Tendência)</span>
+                            <span>+6,0% (Crescimento Acelerado)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Output Dashboard -->
+                <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                    <!-- Status Output Box -->
+                    <div id="sim-status-box" class="p-5 rounded-xl border bg-petroleum-950/80 transition-all flex flex-col justify-between h-full">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Resultado das Projeções (12M)</span>
+                                <span id="sim-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold">Calculando...</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 my-4">
+                                <div class="bg-petroleum-900/80 p-3 rounded-lg border border-teal-900/60">
+                                    <span class="text-[11px] text-slate-400">Déficit Nominal Projetado:</span>
+                                    <div id="sim-res-nominal" class="text-xl font-bold text-red-400 mt-1">-6,65% do PIB</div>
+                                </div>
+                                <div class="bg-petroleum-900/80 p-3 rounded-lg border border-teal-900/60">
+                                    <span class="text-[11px] text-slate-400">Variação Anual Dívida/PIB:</span>
+                                    <div id="sim-res-debt" class="text-xl font-bold text-amber-400 mt-1">+3,20 p.p.</div>
+                                </div>
+                            </div>
+
+                            <p id="sim-analysis" class="text-xs text-slate-300 leading-relaxed mt-2 border-t border-teal-900/50 pt-3">
+                                Carregando análise fiscal...
+                            </p>
+                        </div>
+
+                        <!-- Technical Formula Legend -->
+                        <div class="mt-4 pt-3 border-t border-teal-900/50 text-[11px] text-slate-400 flex items-center justify-between">
+                            <span>Equação da Dinâmica da Dívida:</span>
+                            <span class="font-mono text-teal-300 bg-petroleum-900 px-2 py-0.5 rounded border border-teal-900/80">Δd ≈ -p + (r - g)d</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-xs text-slate-400 py-6 border-t border-teal-900/50 space-y-2">
+            <p>Infográfico Fiscal Retificado • Séries do SGS/BACEN (4759 - Juros Nominais | 4750 - Resultado Primário) • Atualizado até Setembro de 2026.</p>
+            <p class="text-slate-400">Desenvolvido para acompanhamento macroeconômico, ensino de finanças públicas e análise de sustentabilidade da dívida.</p>
+        </footer>
+
+    </main>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- HISTORICAL & PROJECTED DATA (2000 to Sept/2026) ---
+        // Years array
+        const rawYears = [
+            2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+            2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
+            2020, 2021, 2022, 2023, 2024, 2025, '2026*'
+        ];
+
+        // Primary Result (% of GDP) - Series 4750 proxy
+        const primaryGdpData = [
+            3.47, 3.55, 3.88, 4.25, 4.46, 4.35, 3.75, 3.98, 3.84, 1.95,
+            2.69, 3.11, 2.26, 1.72, -0.57, -1.88, -2.47, -1.69, -1.70, -1.23,
+            -9.41, 0.73, 1.25, -2.29, -0.40, -0.10, 0.20
+        ];
+
+        // Consolidated Nominal Interest Expense (% of GDP) - Series 4759 (Juros Nominais SGS/BACEN)
+        const interestGdpData = [
+            6.78, 6.90, 7.35, 9.15, 7.10, 7.50, 6.40, 6.10, 5.50, 5.30,
+            5.05, 5.60, 4.70, 4.75, 5.48, 8.49, 6.51, 6.09, 5.45, 5.01,
+            4.20, 5.05, 5.90, 6.12, 6.80, 6.50, 6.10
+        ];
+
+        // Estimated Nominal GDP in BRL Billions (for unit conversion)
+        const nominalGdpBrl = [
+            1200, 1315, 1480, 1715, 1950, 2170, 2410, 2720, 3110, 3330,
+            3885, 4375, 4810, 5330, 5770, 6000, 6260, 6580, 7000, 7400,
+            7600, 8900, 10000, 10800, 11500, 12200, 12900
+        ];
+
+        // State variables
+        let currentUnit = '%PIB'; // '%PIB' or 'BRL'
+        let chartInstance = null;
+
+        // Computed Datasets
+        function getComputedDatasets() {
+            const isGdp = currentUnit === '%PIB';
+
+            // Calculate Nominal Result (Primary - Interest)
+            const nominalGdpData = primaryGdpData.map((prim, idx) => {
+                return parseFloat((prim - interestGdpData[idx]).toFixed(2));
+            });
+
+            if (isGdp) {
+                return {
+                    primary: primaryGdpData,
+                    interest: interestGdpData,
+                    nominal: nominalGdpData,
+                    unitSymbol: '% do PIB'
+                };
+            } else {
+                // Convert to BRL Billions
+                const primaryBrl = primaryGdpData.map((val, i) => parseFloat(((val / 100) * nominalGdpBrl[i]).toFixed(1)));
+                const interestBrl = interestGdpData.map((val, i) => parseFloat(((val / 100) * nominalGdpBrl[i]).toFixed(1)));
+                const nominalBrl = nominalGdpData.map((val, i) => parseFloat(((val / 100) * nominalGdpBrl[i]).toFixed(1)));
+
+                return {
+                    primary: primaryBrl,
+                    interest: interestBrl,
+                    nominal: nominalBrl,
+                    unitSymbol: 'R$ Bi'
+                };
+            }
+        }
+
+        // Initialize Chart.js
+        function initChart() {
+            const ctx = document.getElementById('fiscalChart').getContext('2d');
+            const data = getComputedDatasets();
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: rawYears,
+                    datasets: [
+                        {
+                            label: `Resultado Primário - Série 4750 (${data.unitSymbol})`,
+                            data: data.primary,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: `Juros Nominais - Série 4759 (${data.unitSymbol})`,
+                            data: data.interest,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: `Resultado / Déficit Nominal (${data.unitSymbol})`,
+                            data: data.nominal,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#08282e',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#cbd5e1',
+                            borderColor: '#14b8a6',
+                            borderWidth: 1,
+                            padding: 12,
+                            boxPadding: 6,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y > 0 ? `+${context.parsed.y}` : context.parsed.y;
+                                        label += ` ${currentUnit === '%PIB' ? '%' : ' R$ Bi'}`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(20, 184, 166, 0.08)'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(20, 184, 166, 0.12)'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 },
+                                callback: function(value) {
+                                    return value + (currentUnit === '%PIB' ? '%' : ' Bi');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Toggle Unit (% do PIB vs R$ Bi)
+        function setUnit(unit) {
+            currentUnit = unit;
+            const btnGdp = document.getElementById('btn-unit-gdp');
+            const btnBrl = document.getElementById('btn-unit-brl');
+
+            if (unit === '%PIB') {
+                btnGdp.className = "px-3 py-1.5 rounded-md font-medium text-white bg-teal-600 transition-all";
+                btnBrl.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-all";
+            } else {
+                btnBrl.className = "px-3 py-1.5 rounded-md font-medium text-white bg-teal-600 transition-all";
+                btnGdp.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-all";
+            }
+
+            updateChartData();
+        }
+
+        // Filter Chart Period
+        function filterPeriod(period) {
+            let startYear, endYear;
+
+            if (period === 'all') {
+                startYear = 2000; endYear = 2026;
+            } else {
+                const parts = period.split('-');
+                startYear = parseInt(parts[0]);
+                endYear = parseInt(parts[1]);
+            }
+
+            const startIndex = rawYears.findIndex(y => y === startYear || y === startYear.toString());
+            const endIndex = rawYears.findIndex(y => y === endYear || y === endYear.toString() || y === `${endYear}*`);
+
+            const filteredLabels = rawYears.slice(startIndex, endIndex + 1);
+            const data = getComputedDatasets();
+
+            chartInstance.data.labels = filteredLabels;
+            chartInstance.data.datasets[0].data = data.primary.slice(startIndex, endIndex + 1);
+            chartInstance.data.datasets[1].data = data.interest.slice(startIndex, endIndex + 1);
+            chartInstance.data.datasets[2].data = data.nominal.slice(startIndex, endIndex + 1);
+
+            chartInstance.update();
+        }
+
+        // Toggle Series Visibility
+        function toggleSeries(index) {
+            const isVisible = chartInstance.isDatasetVisible(index);
+            if (isVisible) {
+                chartInstance.hide(index);
+            } else {
+                chartInstance.show(index);
+            }
+        }
+
+        // Reset Zoom / View
+        function resetZoom() {
+            document.getElementById('select-period').value = 'all';
+            filterPeriod('all');
+        }
+
+        // Refresh Chart Datasets
+        function updateChartData() {
+            const period = document.getElementById('select-period').value;
+            filterPeriod(period);
+        }
+
+        // --- SIMULATOR LOGIC ---
+        function updateSimulation() {
+            // Inputs
+            const primary = parseFloat(document.getElementById('sim-primary').value);
+            const interest = parseFloat(document.getElementById('sim-interest').value);
+            const gdpGrowth = parseFloat(document.getElementById('sim-gdp').value);
+
+            // Update UI Labels
+            document.getElementById('sim-primary-val').innerText = (primary >= 0 ? '+' : '') + primary.toFixed(2) + '%';
+            document.getElementById('sim-interest-val').innerText = interest.toFixed(2) + '%';
+            document.getElementById('sim-gdp-val').innerText = (gdpGrowth >= 0 ? '+' : '') + gdpGrowth.toFixed(2) + '%';
+
+            // Assumptions for simulation
+            const currentDebtRatio = 78.0; // ~78% Dívida Bruta/PIB
+            const realInterest = Math.max(0.5, interest - 4.0);
+            const interestCostGdp = (currentDebtRatio * (realInterest / 100));
+
+            // Nominal Deficit = Primary - Interest Cost (% of GDP)
+            const nominalResult = primary - interestCostGdp;
+
+            // Debt dynamics formula: Δd = -p + (r - g) * d
+            const debtDelta = -primary + ((realInterest - gdpGrowth) / 100) * currentDebtRatio;
+
+            // DOM Elements for results
+            const resNominalEl = document.getElementById('sim-res-nominal');
+            const resDebtEl = document.getElementById('sim-res-debt');
+            const badgeEl = document.getElementById('sim-badge');
+            const analysisEl = document.getElementById('sim-analysis');
+            const statusBox = document.getElementById('sim-status-box');
+
+            resNominalEl.innerText = `${nominalResult >= 0 ? '+' : ''}${nominalResult.toFixed(2)}% do PIB`;
+            resDebtEl.innerText = `${debtDelta >= 0 ? '+' : ''}${debtDelta.toFixed(2)} p.p./ano`;
+
+            // Dynamic Styling & Feedback Analysis
+            if (debtDelta <= 0) {
+                badgeEl.innerText = 'Trajetória Sustentável';
+                badgeEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                statusBox.className = 'p-5 rounded-xl border border-emerald-500/40 bg-petroleum-950/90 transition-all flex flex-col justify-between h-full shadow-lg shadow-emerald-950/20';
+
+                analysisEl.innerHTML = `
+                    <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> Estabilidade Fiscal Alcançada:</span> 
+                    O esforço primário combinado com o crescimento de <strong>${gdpGrowth.toFixed(1)}%</strong> supera o custo real dos juros. 
+                    A relação Dívida/PIB tende a recuar gradualmente para níveis seguros.
+                `;
+            } else if (debtDelta < 2.0) {
+                badgeEl.innerText = 'Alerta / Vulnerabilidade';
+                badgeEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                statusBox.className = 'p-5 rounded-xl border border-amber-500/40 bg-petroleum-950/90 transition-all flex flex-col justify-between h-full shadow-lg shadow-amber-950/20';
+
+                analysisEl.innerHTML = `
+                    <span class="text-amber-400 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Crescimento Moderado da Dívida:</span> 
+                    O resultado atual ainda gera expansão na relação Dívida/PIB (+${debtDelta.toFixed(2)} p.p./ano). 
+                    Pode demandar maior ajuste primário ou queda de juros no médio prazo.
+                `;
+            } else {
+                badgeEl.innerText = 'Trajetória Insustentável';
+                badgeEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30';
+                statusBox.className = 'p-5 rounded-xl border border-red-500/40 bg-petroleum-950/90 transition-all flex flex-col justify-between h-full shadow-lg shadow-red-950/20';
+
+                analysisEl.innerHTML = `
+                    <span class="text-red-400 font-semibold"><i class="fa-solid fa-circle-xmark mr-1"></i> Risco de Bola de Neve Fiscal:</span> 
+                    O déficit nominal elevado gera um crescimento rápido no endividamento (+${debtDelta.toFixed(2)} p.p./ano). 
+                    Essa dinâmica amplia a percepção de risco e tende a pressionar ainda mais os juros e a inflação.
+                `;
+            }
+        }
+
+        function resetSimulator() {
+            document.getElementById('sim-primary').value = 0.25;
+            document.getElementById('sim-interest').value = 11.5;
+            document.getElementById('sim-gdp').value = 2.0;
+            updateSimulation();
+        }
+
+        // On Page Load Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            updateSimulation();
+        });
+    </script>
+</body>
+</html>

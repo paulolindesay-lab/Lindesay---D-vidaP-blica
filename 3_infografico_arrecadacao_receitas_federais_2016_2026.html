@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico Interativo - Arrecadações de Receitas Federais (2016-2026)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#0a192f',
+                            800: '#102a43',
+                            700: '#1e3a5f',
+                            600: '#243b53',
+                        },
+                        gold: {
+                            500: '#d4af37',
+                            400: '#e6c547',
+                            600: '#aa8c2c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-navy-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-navy-900">
+
+    <!-- Header / Author Highlight Banner -->
+    <header class="bg-navy-800 border-b border-navy-700 shadow-2xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gold-500 text-navy-900 p-3 rounded-xl shadow-lg font-bold text-xl flex items-center justify-center">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">ARRECADAÇÕES DE RECEITAS FEDERAIS</h1>
+                    <p class="text-xs sm:text-sm text-gold-400 font-medium">Série Histórica Consolidada (2016 — Setembro de 2026) | Fonte: 2026 — Receita Federal</p>
+                </div>
+            </div>
+            
+            <!-- Author Highlight Card -->
+            <div class="bg-navy-900/90 border border-gold-500/50 rounded-xl p-3.5 shadow-xl flex items-start space-x-3 max-w-lg">
+                <div class="text-gold-500 text-2xl mt-0.5">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] uppercase tracking-wider bg-gold-500/20 text-gold-400 px-2 py-0.5 rounded font-bold border border-gold-500/30">Autor dos Estudos</span>
+                    <p class="text-xs font-bold text-white mt-1">Paulo Lindesay</p>
+                    <p class="text-[11px] text-slate-300 leading-tight">Diretor da Executiva Nacional da ASSIBGE-SN / Coordenador do Núcleo Sindical Canabarro / Coordenador da Auditoria Cidadã da Dívida Núcleo RJ</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow w-full space-y-8">
+
+        <!-- Top KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Card 1 -->
+            <div class="bg-navy-800/90 border border-navy-700 hover:border-gold-500/50 transition-all rounded-2xl p-5 shadow-xl relative overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-navy-700/40 text-7xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Arrecadação 2025</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-white mt-2">R$ 2.886.876 mi</div>
+                <p class="text-xs text-gold-400 mt-2 font-medium"><i class="fa-solid fa-arrow-up text-emerald-400"></i> Valores Correntes Anuais</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-navy-800/90 border border-navy-700 hover:border-gold-500/50 transition-all rounded-2xl p-5 shadow-xl relative overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-navy-700/40 text-7xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Arrecadação 2026 (Parcial)</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-white mt-2">R$ 2.111.542 mi</div>
+                <p class="text-xs text-gold-400 mt-2 font-medium"><i class="fa-solid fa-clock text-blue-400"></i> Acumulado até Agosto/Setembro</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-navy-800/90 border border-navy-700 hover:border-gold-500/50 transition-all rounded-2xl p-5 shadow-xl relative overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-navy-700/40 text-7xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pico Deflacionado (2025)</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-2">R$ 3.103.469 mi</div>
+                <p class="text-xs text-slate-300 mt-2 font-medium"><i class="fa-solid fa-shield-halved text-gold-500"></i> IPCA / IBGE Corrigido</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-navy-800/90 border border-navy-700 hover:border-gold-500/50 transition-all rounded-2xl p-5 shadow-xl relative overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-navy-700/40 text-7xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Menor Ano (Pandemia)</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mt-2">R$ 1.479.390 mi</div>
+                <p class="text-xs text-slate-300 mt-2 font-medium"><i class="fa-solid fa-virus text-amber-400"></i> Ano 2020 (Covid-19)</p>
+            </div>
+        </div>
+
+        <!-- Interactive Chart Section 1: Annual Comparison (2016 - 2026) -->
+        <div class="bg-navy-800/90 border border-navy-700 rounded-2xl p-6 shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-column text-gold-500"></i> Comparação das Arrecadações Anuais (2016 a Setembro/2026)
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Valores Correntes vs. Valores Deflacionados (R$ Milhões) com base nos dados oficiais da Receita Federal.</p>
+                </div>
+                <div class="flex items-center gap-2 bg-navy-900 p-1.5 rounded-xl border border-navy-700">
+                    <button id="btnCorrentes" onclick="toggleDataset('correntes')" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gold-500 text-navy-900 transition-all shadow">Correntes</button>
+                    <button id="btnDeflacionados" onclick="toggleDataset('deflacionados')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">Deflacionados</button>
+                    <button id="btnAmbos" onclick="toggleDataset('ambos')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all">Ambos</button>
+                </div>
+            </div>
+            
+            <div class="relative h-[380px] w-full">
+                <canvas id="annualChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Interactive Section 2: Monthly Breakdown by Year -->
+        <div class="bg-navy-800/90 border border-navy-700 rounded-2xl p-6 shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-gold-500"></i> Arrecadação Mensal por Ano (Janeiro a Dezembro)
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Selecione o ano desejado para visualizar o comportamento mês a mês da arrecadação federal.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="yearSelector" class="text-xs font-bold text-gold-400 uppercase">Ano:</label>
+                    <select id="yearSelector" onchange="updateMonthlyChart()" class="bg-navy-900 border border-gold-500/50 text-white text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold-500 shadow">
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020 (Pandemia)</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026 (Parcial até Ago/Set)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                <div class="lg:col-span-2 relative h-[340px] w-full">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+                <div class="bg-navy-900/80 border border-navy-700 rounded-xl p-5 space-y-4 shadow-inner">
+                    <h3 class="text-sm font-bold text-gold-400 border-b border-navy-700 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info"></i> Resumo do Ano Selecionado
+                    </h3>
+                    <div id="monthlyStats" class="space-y-3 text-xs text-slate-300">
+                        <!-- Dynamic content filled via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tables & Sources Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Table Summary -->
+            <div class="bg-navy-800/90 border border-navy-700 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
+                <div>
+                    <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-table text-gold-500"></i> Tabela Consolidada (2016 — 2026)
+                    </h2>
+                    <p class="text-xs text-slate-400 mb-4">Valores em R$ Milhões (Correntes e Deflacionados).</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-navy-900 text-gold-400 uppercase text-[10px] tracking-wider border-b border-navy-700">
+                                <tr>
+                                    <th class="py-2.5 px-3">Ano</th>
+                                    <th class="py-2.5 px-3">Valores Correntes</th>
+                                    <th class="py-2.5 px-3">Valores Deflacionados</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-navy-700">
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2016</td><td class="py-2 px-3">1.289.905</td><td class="py-2 px-3">2.191.357</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2017</td><td class="py-2 px-3">1.342.409</td><td class="py-2 px-3">2.145.636</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2018</td><td class="py-2 px-3">1.457.112</td><td class="py-2 px-3">2.262.292</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2019</td><td class="py-2 px-3">1.537.079</td><td class="py-2 px-3">2.300.289</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2020 (1)</td><td class="py-2 px-3">1.479.390</td><td class="py-2 px-3">2.122.555</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2021</td><td class="py-2 px-3">1.894.301</td><td class="py-2 px-3">2.600.377</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2022</td><td class="py-2 px-3">2.218.483</td><td class="py-2 px-3">2.767.006</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2023</td><td class="py-2 px-3">2.318.121</td><td class="py-2 px-3">2.733.164</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2024</td><td class="py-2 px-3">2.652.703</td><td class="py-2 px-3">2.989.500</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2025</td><td class="py-2 px-3">2.886.876</td><td class="py-2 px-3">3.103.469</td></tr>
+                                <tr class="hover:bg-navy-700/50"><td class="py-2 px-3 font-bold text-white">2026 (Parcial)</td><td class="py-2 px-3">2.111.542</td><td class="py-2 px-3">2.177.124</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-4 text-[11px] text-slate-400 italic">
+                    (1) A arrecadação caiu em 2020 devido ao início da pandemia da COVID-19.
+                </div>
+            </div>
+
+            <!-- Sources & Methodology -->
+            <div class="bg-navy-800/90 border border-navy-700 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
+                <div>
+                    <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark text-gold-500"></i> Fontes e Metodologia Oficial
+                    </h2>
+                    <ul class="space-y-3 text-xs text-slate-300">
+                        <li class="bg-navy-900/60 p-3 rounded-xl border border-navy-700">
+                            <span class="font-bold text-gold-400 block mb-1"><i class="fa-solid fa-building-columns"></i> Receita Federal do Brasil (2026)</span>
+                            Séries históricas oficiais de arrecadação de tributos federais, estatísticas fiscais correntes e deflacionadas.
+                        </li>
+                        <li class="bg-navy-900/60 p-3 rounded-xl border border-navy-700">
+                            <span class="font-bold text-gold-400 block mb-1"><i class="fa-solid fa-calculator"></i> Calculadora IPCA / IBGE</span>
+                            Utilizado para o cálculo de valores deflacionados e correção monetária da série histórica (<a href="https://www.ibge.gov.br/explica/inflacao.php" target="_blank" class="underline text-blue-400">ibge.gov.br</a>).
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-navy-700 text-center">
+                    <p class="text-xs font-bold text-gold-400">Infográfico Interativo e Estudo Técnico</p>
+                    <p class="text-[11px] text-slate-300 mt-1">Confecção: <strong>Paulo Lindesay</strong> — Diretor da Executiva Nacional da ASSIBGE-SN / Coordenador do Núcleo Sindical Canabarro / Coordenador da Auditoria Cidadã da Dívida Núcleo RJ.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy-800 border-t border-navy-700 py-6 mt-12 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Infográfico Dinâmico e Interativo — Arrecadações de Receitas Federais (2016-2026) | Desenvolvido com Dados Oficiais da Receita Federal.</p>
+            <p class="mt-1 text-gold-500 font-semibold">Autor: Paulo Lindesay (ASSIBGE-SN / Auditoria Cidadã)</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Charts and Interactivity -->
+    <script>
+        // Data for Annual Chart
+        const years = ['2016', '2017', '2018', '2019', '2020 (1)', '2021', '2022', '2023', '2024', '2025', '2026 (Parcial)'];
+        const correntes = [1289905, 1342409, 1457112, 1537079, 1479390, 1894301, 2218483, 2318121, 2652703, 2886876, 2111542];
+        const deflacionados = [2191357, 2145636, 2262292, 2300289, 2122555, 2600377, 2767006, 2733164, 2989500, 3103469, 2177124];
+
+        // Data for Monthly Chart by Year (Jan to Dec values in R$ Millions)
+        const monthlyData = {
+            '2016': [129385, 87851, 95779, 110895, 95219, 98129, 107416, 91808, 94770, 148801, 102245, 127607],
+            '2017': [137392, 92358, 98994, 118047, 97694, 104100, 109948, 104206, 105595, 121144, 115089, 137842],
+            '2018': [155619, 105122, 105659, 130806, 106192, 110855, 129615, 109751, 110664, 131880, 119420, 141529],
+            '2019': [160426, 115062, 109854, 139030, 113278, 119946, 137735, 119951, 113933, 135202, 125161, 147501],
+            '2020': [174991, 116430, 109718, 101154, 77415, 86258, 115990, 124505, 119825, 153938, 140101, 159065],
+            '2021': [181771, 128935, 138359, 158124, 142859, 138486, 172760, 148162, 150966, 180441, 158489, 194949],
+            '2022': [235321, 148664, 164147, 195085, 165333, 181040, 202588, 172314, 166287, 205475, 172038, 210191],
+            '2023': [251745, 158995, 171056, 203889, 176812, 180475, 201829, 172785, 174316, 215602, 179392, 231225],
+            '2024': [280636, 186522, 190611, 228873, 202979, 208844, 231044, 201622, 203169, 247920, 209218, 261265],
+            '2025': [301164, 202453, 209673, 247715, 230152, 234594, 254221, 208791, 216727, 261908, 226753, 292724],
+            '2026': [325751, 222117, 229249, 278283, 266793, 264437, 289346, 235566, 239384, null, null, null] // Parcial até agosto/setembro
+        };
+
+        const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+        // Initialize Annual Chart
+        const ctxAnnual = document.getElementById('annualChart').getContext('2d');
+        let annualChart = new Chart(ctxAnnual, {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Valores Correntes (R$ mi)',
+                        data: correntes,
+                        backgroundColor: 'rgba(212, 175, 55, 0.85)',
+                        borderColor: '#d4af37',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Valores Deflacionados (R$ mi)',
+                        data: deflacionados,
+                        backgroundColor: 'rgba(30, 144, 255, 0.85)',
+                        borderColor: '#1e90ff',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        hidden: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#f8fafc', font: { family: 'sans-serif', weight: 'bold' } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let val = context.raw;
+                                return context.dataset.label + ': R$ ' + val.toLocaleString('pt-BR') + ' milhões';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#cbd5e1', font: { weight: 'bold' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#cbd5e1',
+                            callback: function(value) { return 'R$ ' + (value / 1000000).toFixed(1) + ' Tri'; }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.08)' }
+                    }
+                }
+            }
+        });
+
+        // Toggle Dataset function
+        function toggleDataset(type) {
+            const btnC = document.getElementById('btnCorrentes');
+            const btnD = document.getElementById('btnDeflacionados');
+            const btnA = document.getElementById('btnAmbos');
+
+            // Reset button styles
+            [btnC, btnD, btnA].forEach(b => {
+                b.className = "px-3 py-1.5 text-xs font-bold rounded-lg text-slate-300 hover:text-white transition-all";
+            });
+
+            if (type === 'correntes') {
+                btnC.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-gold-500 text-navy-900 transition-all shadow";
+                annualChart.data.datasets[0].hidden = false;
+                annualChart.data.datasets[1].hidden = true;
+            } else if (type === 'deflacionados') {
+                btnD.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-500 text-white transition-all shadow";
+                annualChart.data.datasets[0].hidden = true;
+                annualChart.data.datasets[1].hidden = false;
+            } else if (type === 'ambos') {
+                btnA.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-navy-900 transition-all shadow";
+                annualChart.data.datasets[0].hidden = false;
+                annualChart.data.datasets[1].hidden = false;
+            }
+            annualChart.update();
+        }
+
+        // Initialize Monthly Chart
+        const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
+        let monthlyChart = new Chart(ctxMonthly, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Arrecadação Mensal (R$ mi)',
+                    data: monthlyData['2026'],
+                    borderColor: '#d4af37',
+                    backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#d4af37',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#f8fafc', font: { family: 'sans-serif', weight: 'bold' } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let val = context.raw;
+                                if (val === null) return 'Dado não disponível';
+                                return 'Arrecadação: R$ ' + val.toLocaleString('pt-BR') + ' milhões';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#cbd5e1', font: { weight: 'bold', size: 10 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#cbd5e1',
+                            callback: function(value) { return 'R$ ' + (value / 1000).toFixed(0) + ' Bi'; }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.08)' }
+                    }
+                }
+            }
+        });
+
+        function updateMonthlyChart() {
+            const selectedYear = document.getElementById('yearSelector').value;
+            const data = monthlyData[selectedYear];
+            monthlyChart.data.datasets[0].data = data;
+            monthlyChart.data.datasets[0].label = `Arrecadação Mensal - ${selectedYear} (R$ mi)`;
+            monthlyChart.update();
+            updateMonthlyStats(selectedYear, data);
+        }
+
+        function updateMonthlyStats(year, data) {
+            const validData = data.filter(val => val !== null);
+            const total = validData.reduce((acc, curr) => acc + curr, 0);
+            const max = Math.max(...validData);
+            const min = Math.min(...validData);
+            const avg = Math.round(total / validData.length);
+
+            const statsContainer = document.getElementById('monthlyStats');
+            statsContainer.innerHTML = `
+                <div class="flex justify-between items-center"><span class="text-slate-400">Total Período:</span> <span class="font-bold text-white">R$ ${total.toLocaleString('pt-BR')} mi</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400">Média Mensal:</span> <span class="font-bold text-white">R$ ${avg.toLocaleString('pt-BR')} mi</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400">Maior Mês:</span> <span class="font-bold text-emerald-400">R$ ${max.toLocaleString('pt-BR')} mi</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400">Menor Mês:</span> <span class="font-bold text-amber-400">R$ ${min.toLocaleString('pt-BR')} mi</span></div>
+                <div class="pt-2 border-t border-navy-700 text-[11px] text-gold-400 italic">Ano selecionado: ${year}</div>
+            `;
+        }
+
+        // Initial stats load
+        updateMonthlyStats('2026', monthlyData['2026']);
+    </script>
+</body>
+</html>
