@@ -3,917 +3,846 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema da Dívida Pública - Paulo Lindesay | Auditoria Cidadã RJ</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Análise Fiscal 2027: PLP 299/2026 e a Dinâmica da Dívida Pública</title>
+    <!-- Carregamento do Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carregamento da Fonte Inter e JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Carregamento do Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
                     colors: {
-                        petrol: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            400: '#38bdf8',
-                            600: '#0284c7',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                            950: '#082f49',
-                        },
-                        navy: {
-                            800: '#0b132b',
-                            900: '#090d16',
-                            950: '#04070d',
+                        slate: {
+                            850: '#151e2e',
+                            950: '#0a0f1a',
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top right, #0c4a6e 0%, #0b132b 55%, #04070d 100%);
-            background-attachment: fixed;
-            color: #e2e8f0;
-            min-height: 100vh;
+        /* Estilização personalizada para sliders e rolagem suave */
+        html {
+            scroll-behavior: smooth;
         }
-
-        /* Glassmorphism Styles */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(56, 189, 248, 0.12);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
         }
-
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            transition: transform 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 999px;
+        }
         .glass-card {
-            background: rgba(15, 23, 42, 0.55);
+            background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(51, 65, 85, 0.6);
         }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 12px 28px -8px rgba(14, 165, 233, 0.35);
-        }
-
-        .glass-input {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(8px);
-            color: #fff;
-        }
-
-        .glass-input:focus {
-            outline: none;
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(11, 19, 43, 0.8);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(56, 189, 248, 0.25);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(56, 189, 248, 0.5);
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-sky-500/30 selection:text-sky-200">
 
-    <!-- Header & Navigation -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <!-- Branding Header -->
-                <div class="flex items-start sm:items-center space-x-3.5">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-petrol-600 via-cyan-500 to-sky-400 flex-shrink-0 flex items-center justify-center text-white shadow-lg shadow-cyan-500/25 border border-cyan-300/30">
-                        <i class="fa-solid fa-scale-balanced text-2xl"></i>
-                    </div>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-1">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
-                                Auditoria Cidadã da Dívida
-                            </span>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-800/80 text-slate-300 border border-slate-700">
-                                Núcleo RJ
-                            </span>
-                        </div>
-                        <h1 class="text-xl sm:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-cyan-400 tracking-tight leading-tight">
-                            Sistema da Dívida Pública
-                        </h1>
-                        <p class="text-xs font-semibold text-slate-300 flex items-center mt-0.5">
-                            <i class="fa-solid fa-user-tie text-cyan-400 mr-1.5 text-xs"></i>
-                            Paulo Lindesay <span class="mx-1 text-slate-500">•</span> <span class="text-slate-400 font-normal">Coordenador da Auditoria Cidadã Núcleo RJ</span>
-                        </p>
-                    </div>
-                </div>
+    <!-- Barra de Navegação Superior -->
+    <nav class="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-rose-500 animate-pulse"></div>
+                <span class="font-mono text-xs sm:text-sm font-semibold tracking-wider text-slate-300 uppercase">
+                    Observatório Orçamentário • PLP 299/2026
+                </span>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-xs font-medium text-slate-400">
+                <a href="#contexto" class="hover:text-sky-400 transition">Contexto</a>
+                <a href="#raio-x" class="hover:text-sky-400 transition">Raio-X do Ajuste</a>
+                <a href="#escala-real" class="hover:text-sky-400 transition">Escala Real</a>
+                <a href="#pilares" class="hover:text-sky-400 transition">Contrapontos Técnicos</a>
+                <a href="#simulador" class="px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/30 hover:bg-sky-500/20 transition">Simulador 2027</a>
+            </div>
+        </div>
+    </nav>
 
-                <!-- Top Right Actions -->
-                <div class="flex items-center space-x-3 self-end md:self-auto">
-                    <button onclick="openModal('add')" class="bg-gradient-to-r from-petrol-600 to-cyan-500 hover:from-petrol-500 hover:to-cyan-400 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-lg shadow-cyan-500/20 flex items-center transition-all active:scale-95 border border-cyan-400/20">
-                        <i class="fa-solid fa-plus-circle mr-2 text-base"></i> Novo Registro
-                    </button>
-                    <div class="relative inline-block text-left">
-                        <button onclick="toggleMenu()" class="glass-panel p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all border border-slate-700/60" title="Opções de Backup">
-                            <i class="fa-solid fa-sliders text-base"></i>
-                        </button>
-                        <!-- Settings Dropdown -->
-                        <div id="settings-menu" class="hidden absolute right-0 mt-2 w-52 rounded-2xl glass-panel shadow-2xl py-2 z-50 border border-slate-700/80">
-                            <button onclick="exportData()" class="w-full text-left px-4 py-2.5 text-xs sm:text-sm text-slate-300 hover:bg-petrol-600/30 hover:text-white flex items-center">
-                                <i class="fa-solid fa-file-export w-5 mr-2 text-cyan-400"></i> Exportar JSON
-                            </button>
-                            <label class="w-full text-left px-4 py-2.5 text-xs sm:text-sm text-slate-300 hover:bg-petrol-600/30 hover:text-white flex items-center cursor-pointer">
-                                <i class="fa-solid fa-file-import w-5 mr-2 text-cyan-400"></i> Importar JSON
-                                <input type="file" id="import-file" onchange="importData(event)" accept=".json" class="hidden">
-                            </label>
-                            <hr class="my-1 border-slate-700/60">
-                            <button onclick="resetData()" class="w-full text-left px-4 py-2.5 text-xs sm:text-sm text-rose-400 hover:bg-rose-500/20 flex items-center">
-                                <i class="fa-solid fa-rotate-left w-5 mr-2"></i> Restaurar Dados Iniciais
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <!-- 1. Cabeçalho e Contexto do PLP 299/2026 -->
+    <header id="contexto" class="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-slate-800/60">
+        <!-- Grade decorativa de fundo -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-slate-950 to-slate-950 pointer-events-none"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-mono text-sky-400 mb-6">
+                <span>SENADO FEDERAL • MATÉRIA 176328 (PLP 299/2026)</span>
+                <span class="text-slate-600">|</span>
+                <span class="text-slate-300">Autoria: Sen. Jaques Wagner • Relatoria: Sen. Eduardo Braga</span>
             </div>
 
-            <!-- Categories Tabs Header -->
-            <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between overflow-x-auto scrollbar-none">
-                <nav class="flex space-x-1.5 min-w-max">
-                    <button onclick="setTab('all')" id="tab-all" class="nav-tab px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-petrol-600 border border-cyan-400/30 transition-all">
-                        <i class="fa-solid fa-border-all mr-1.5"></i>Todos os Acervos
-                    </button>
-                    <button onclick="setTab('artigo')" id="tab-artigo" class="nav-tab px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all">
-                        <i class="fa-solid fa-newspaper mr-1.5"></i>Artigos & Análises
-                    </button>
-                    <button onclick="setTab('video')" id="tab-video" class="nav-tab px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all">
-                        <i class="fa-solid fa-video mr-1.5"></i>Vídeos & Palestras
-                    </button>
-                    <button onclick="setTab('doc')" id="tab-doc" class="nav-tab px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all">
-                        <i class="fa-solid fa-file-pdf mr-1.5"></i>Documentos & PDFs
-                    </button>
-                    <button onclick="setTab('image')" id="tab-image" class="nav-tab px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all">
-                        <i class="fa-solid fa-chart-pie mr-1.5"></i>Infográficos & Imagens
-                    </button>
-                    <button onclick="setTab('html')" id="tab-html" class="nav-tab px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white transition-all">
-                        <i class="fa-solid fa-code mr-1.5"></i>Snippets & HTML
-                    </button>
-                </nav>
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-5xl mb-6">
+                A Matemática do Ajuste Fiscal: <span class="gradient-text">R$ 60 Bilhões em Cortes</span> frente à Dívida de <span class="text-rose-400">R$ 3,485 Trilhões</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-300 max-w-3xl leading-relaxed mb-10">
+                Apresentado em novembro de 2026 para viabilizar o Projeto de Lei Orçamentária Anual (PLOA 2027), o <strong>PLP 299/2026</strong> altera a Lei Complementar 200/2023 (Arcabouço Fiscal). Enquanto os defensores da medida argumentam que o ajuste de R$ 50 bi a R$ 60 bi estabiliza a Dívida Bruta do Governo Geral (DBGG/PIB) e preserva espaço para políticas públicas, economistas críticos apontam uma desproporção estrutural diante dos encargos financeiros da dívida.
+            </p>
+
+            <!-- Cards de Destaques Numéricos -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card rounded-2xl p-5 border-l-4 border-l-amber-400">
+                    <span class="text-xs font-mono uppercase text-slate-400">Ajuste Anunciado (PLP 299)</span>
+                    <div class="text-2xl sm:text-3xl font-bold text-amber-400 mt-1 font-mono">R$ 60,0 Bi</div>
+                    <p class="text-xs text-slate-400 mt-2">Teto bruto estimado (impacto líquido primário entre R$ 43 bi e R$ 54 bi).</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 border-l-4 border-l-rose-500">
+                    <span class="text-xs font-mono uppercase text-slate-400">Serviço da Dívida (PLOA 2027)</span>
+                    <div class="text-2xl sm:text-3xl font-bold text-rose-400 mt-1 font-mono">R$ 3,485 Tri</div>
+                    <p class="text-xs text-slate-400 mt-2">Juros, amortizações e refinanciamento previstos no Orçamento 2027.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 border-l-4 border-l-sky-400">
+                    <span class="text-xs font-mono uppercase text-slate-400">Orçamento Total da União</span>
+                    <div class="text-2xl sm:text-3xl font-bold text-sky-400 mt-1 font-mono">R$ 7,239 Tri</div>
+                    <p class="text-xs text-slate-400 mt-2">O serviço da dívida consome ~48,1% de todo o orçamento federal.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 border-l-4 border-l-purple-400">
+                    <span class="text-xs font-mono uppercase text-slate-400">Relação Ajuste / Dívida</span>
+                    <div class="text-2xl sm:text-3xl font-bold text-purple-400 mt-1 font-mono">1,72%</div>
+                    <p class="text-xs text-slate-400 mt-2">O ajuste máximo equivale a cerca de 6,3 dias do serviço anual da dívida.</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Search and Filter Bar -->
-        <div class="glass-panel p-4 rounded-2xl mb-8 border border-slate-800">
-            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                <!-- Search Input -->
-                <div class="relative w-full lg:w-96">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 transform -translate-y-1/2 text-cyan-400/70 text-sm"></i>
-                    <input type="text" id="search-input" oninput="renderItems()" placeholder="Buscar por título, temas, juros, PEC 32..." 
-                        class="w-full pl-10 pr-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm focus:outline-none placeholder-slate-500">
+    <!-- 2. Raio-X do Pacote de Ajuste (PLP 299/2026) -->
+    <section id="raio-x" class="py-16 sm:py-20 border-b border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-wider text-sky-400">Composição Fiscal • CMO & Senado</span>
+                    <h2 class="text-2xl sm:text-4xl font-bold mt-1">Raio-X do Pacote: De onde vêm os R$ 50 bi a R$ 60 bi?</h2>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800">
+                    <button onclick="setEstimateMode('max')" id="btn-est-max" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-slate-950 transition">Cenário Teto (R$ 60 bi)</button>
+                    <button onclick="setEstimateMode('min')" id="btn-est-min" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Cenário Base (R$ 50 bi)</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Pilar 1 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-sky-500/50 transition group">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-md bg-sky-500/10 text-sky-400 font-mono text-xs font-semibold">DESPESAS PRIMÁRIAS</span>
+                        <span class="font-mono text-lg font-bold text-white" id="val-pilar-1">R$ 18,3 bi</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Bloqueio Permanente e Trava de 2%</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Acionamento de gatilhos autorizativos e limitação do crescimento real das despesas primárias a <strong>2,0% ao ano</strong> (abaixo do teto regular de 2,5% da LC 200/2023), com congelamento definitivo dos valores bloqueados.
+                    </p>
                 </div>
 
-                <!-- Active Filter Tags Display -->
-                <div class="flex items-center gap-2 overflow-x-auto w-full lg:w-auto pb-1 lg:pb-0 scrollbar-none">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider min-w-max"><i class="fa-solid fa-tags text-cyan-400 mr-1"></i> Filtro por Tag:</span>
-                    <div id="tag-cloud" class="flex items-center gap-1.5">
-                        <!-- Dynamic Tags inserted by JS -->
+                <!-- Pilar 2 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-amber-500/50 transition group">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 font-mono text-xs font-semibold">RECEITA / INCENTIVOS</span>
+                        <span class="font-mono text-lg font-bold text-white" id="val-pilar-2">R$ 15,0 bi</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Corte Linear de 10% em Gastos Tributários</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Redução linear de 10% nos benefícios e renúncias fiscais infraconstitucionais, buscando recompor a base de arrecadação federal sem criação direta de novas alíquotas nominais.
+                    </p>
+                </div>
+
+                <!-- Pilar 3 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-indigo-500/50 transition group">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-400 font-mono text-xs font-semibold">CRÉDITOS TRIBUTÁRIOS</span>
+                        <span class="font-mono text-lg font-bold text-white" id="val-pilar-3">R$ 18,3 bi</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Limitação nas Compensações Tributárias</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Restrições ao encontro de contas entre créditos judiciais ou administrativos de empresas e débitos tributários correntes, postergando o impacto no caixa do Tesouro Nacional.
+                    </p>
+                </div>
+
+                <!-- Pilar 4 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-emerald-500/50 transition group">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 font-mono text-xs font-semibold">TETO DE RENÚNCIAS</span>
+                        <span class="font-mono text-lg font-bold text-white" id="val-pilar-4">R$ 4,5 bi</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Trava ao DGT 2026 + IPCA</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Limitação global dos benefícios tributários ao montante registrado no Demonstrativo de Gastos Tributários (DGT) de 2026 corrigido exclusivamente pela inflação oficial (IPCA).
+                    </p>
+                </div>
+
+                <!-- Pilar 5 -->
+                <div class="glass-card rounded-2xl p-6 hover:border-purple-500/50 transition group">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-400 font-mono text-xs font-semibold">MEDIDAS COMPLEMENTARES</span>
+                        <span class="font-mono text-lg font-bold text-white" id="val-pilar-5">R$ 3,9 bi</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Supersalários, Previdência e Exportações</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Revisão de verbas indenizatórias acima do teto constitucional, restrições a compensações previdenciárias entre regimes e limites no financiamento oficial às exportações.
+                    </p>
+                </div>
+
+                <!-- Box de Contradição -->
+                <div class="rounded-2xl p-6 bg-gradient-to-br from-rose-950/70 to-slate-900 border border-rose-500/40 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 text-rose-400 font-mono text-xs font-bold uppercase mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            Contradição Orçamentária
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Impacto Líquido vs. Orçamento Total</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Mesmo somando todas as frentes, a consultoria orçamentária estima impacto primário líquido entre <strong>R$ 43 bi e R$ 54 bi</strong> — apenas <strong>0,74%</strong> do Orçamento Total da União de R$ 7,239 trilhões.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-rose-500/20 flex justify-between items-center text-xs font-mono text-rose-300">
+                        <span>PLOA 2027 Total:</span>
+                        <span class="font-bold">R$ 7.239.000.000.000</span>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Repository Grid -->
-        <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Items generated dynamically by JS -->
-        </div>
-
-        <!-- Empty State -->
-        <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
-            <div class="w-20 h-20 rounded-2xl bg-slate-900/80 flex items-center justify-center text-slate-500 mb-4 border border-slate-800">
-                <i class="fa-solid fa-folder-open text-3xl text-cyan-400/50"></i>
+    <!-- 4. Comparativo Visual Interativo (Escala Real vs Zoom) -->
+    <section id="escala-real" class="py-16 sm:py-20 border-b border-slate-800/60 bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-wider text-rose-400">Perspectiva de Proporção</span>
+                    <h2 class="text-2xl sm:text-4xl font-bold mt-1">Gráfico de Escala Real: O Peso da Dívida no PLOA 2027</h2>
+                    <p class="text-sm text-slate-400 mt-2 max-w-2xl">
+                        Alterne entre a <strong>Escala Real</strong> (onde o ajuste de R$ 60 bi quase desaparece diante dos trilhões da dívida) e o <strong>Zoom nos Componentes</strong> para visualizar a composição detalhada.
+                    </p>
+                </div>
+                <div class="inline-flex rounded-xl bg-slate-950 p-1.5 border border-slate-800 self-start">
+                    <button onclick="updateScaleChart('real')" id="btn-scale-real" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-rose-500 text-white shadow-lg transition">
+                        Escala Real (Proporção Verdadeira)
+                    </button>
+                    <button onclick="updateScaleChart('zoom')" id="btn-scale-zoom" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition">
+                        Zoom nos Componentes (Escala Log)
+                    </button>
+                </div>
             </div>
-            <h3 class="text-base font-bold text-slate-200">Nenhum registro localizado</h3>
-            <p class="text-xs text-slate-400 max-w-sm mt-1">Ajuste os termos de busca ou selecione outra categoria para visualizar o acervo de Paulo Lindesay.</p>
-        </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="glass-panel border-t border-slate-800/80 py-6 mt-12 text-center text-xs text-slate-400">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-scale-balanced text-cyan-400 text-sm"></i>
-                <span class="font-semibold text-slate-300">Auditoria Cidadã da Dívida - Núcleo Rio de Janeiro</span>
+            <div class="glass-card rounded-2xl p-4 sm:p-8">
+                <div class="relative h-[340px] sm:h-[420px] w-full">
+                    <canvas id="scaleComparisonChart"></canvas>
+                </div>
+                <div id="scale-caption" class="mt-6 p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-xs sm:text-sm text-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <span>
+                        <strong>Leitura na Escala Real:</strong> A barra do ajuste do PLP 299/2026 (R$ 60 bi) representa <strong>1,72%</strong> do Serviço da Dívida (R$ 3,485 tri) e <strong>0,83%</strong> do Orçamento Total da União (R$ 7,239 tri).
+                    </span>
+                    <span class="font-mono text-amber-400 shrink-0">Proporção: 1 : 58 (Ajuste vs Dívida)</span>
+                </div>
             </div>
-            <p class="text-slate-500">Acervo mantido por Paulo Lindesay • Armazenamento local no navegador</p>
+        </div>
+    </section>
+
+    <!-- 3. Desconstruindo a Falácia / Análise Técnica e Crítica em 3 Pilares -->
+    <section id="pilares" class="py-16 sm:py-20 border-b border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mb-12">
+                <span class="text-xs font-mono uppercase tracking-wider text-sky-400">Análise Estrutural e Contrapontos</span>
+                <h2 class="text-2xl sm:text-4xl font-bold mt-1">Os 3 Pilares do Debate Fiscal sobre o PLP 299/2026</h2>
+                <p class="text-sm sm:text-base text-slate-400 mt-3">
+                    Enquanto a relatoria do PLP 299/2026 no Senado sustenta que a contenção garante previsibilidade macroeconômica, análises de finanças públicas apontam três limitações estruturais na premissa de que o corte estabiliza a dívida e amplia políticas sociais.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pilar Crítico 1 -->
+                <article class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-rose-500">
+                    <div>
+                        <div class="font-mono text-xs text-rose-400 font-bold mb-2">PILAR 01 • ASSIMETRIA DE GRANDEZA</div>
+                        <h3 class="text-xl font-bold text-white mb-4">A Desproporção Monumental (1,72% da Dívida)</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                            O orçamento de 2027 reserva <strong>R$ 3,485 trilhões</strong> para juros, encargos e refinanciamento da Dívida Pública Federal — quase metade de todo o orçamento da União (R$ 7,239 trilhões).
+                        </p>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Um corte de R$ 60 bilhões incide exclusivamente sobre despesas primárias e renúncias, representando apenas <strong>1,72%</strong> da dotação financeira da dívida. Na prática, o esforço fiscal de um ano inteiro equivale a menos de uma semana de pagamentos e rolagem de títulos públicos.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800">
+                        <div class="flex justify-between text-xs font-mono mb-1.5">
+                            <span class="text-slate-400">Cobertura do Serviço da Dívida</span>
+                            <span class="text-rose-400 font-bold">1,72%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-rose-500 h-2 rounded-full" style="width: 2.5%"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Pilar Crítico 2 -->
+                <article class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-amber-400">
+                    <div>
+                        <div class="font-mono text-xs text-amber-400 font-bold mb-2">PILAR 02 • REGRA DO ARCABOUÇO (LC 200/2023)</div>
+                        <h3 class="text-xl font-bold text-white mb-4">A Premissa de "Abrir Espaço para Políticas Públicas"</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                            Segundo o relatório apresentado no Senado, conter despesas obrigatórias e renúncias evitaria o estrangulamento de investimentos e programas sociais dentro do limite de gastos.
+                        </p>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Contudo, pelo desenho da LC 200/2023 e do PLP 299/2026, o teto global de despesas primárias fica limitado a <strong>2,0% de crescimento real</strong> no gatilho, e o bloqueio é <strong>permanente</strong>. Cortar despesas primárias não cria orçamento livre adicional para saúde ou educação; o recurso retido destina-se a cumprir a meta de resultado primário e amortizar juros financeiros.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono">
+                        <span class="text-slate-400">Expansão Líquida do Teto:</span>
+                        <span class="px-2 py-1 rounded bg-amber-500/10 text-amber-300 font-bold">R$ 0,00 (Congelamento)</span>
+                    </div>
+                </article>
+
+                <!-- Pilar Crítico 3 -->
+                <article class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-sky-400">
+                    <div>
+                        <div class="font-mono text-xs text-sky-400 font-bold mb-2">PILAR 03 • DINÂMICA MACROECONÔMICA</div>
+                        <h3 class="text-xl font-bold text-white mb-4">O Motor Real da DBGG/PIB (Selic vs. PIB)</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                            A razão Dívida Bruta / PIB depende fundamentalmente da diferença entre a <strong>taxa real de juros</strong> incidente sobre o estoque da dívida (~R$ 9,5 trilhões) e a <strong>taxa de crescimento do PIB</strong>.
+                        </p>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Com a Selic projetada em patamar elevado (em torno de 13,75% a.a.), a capitalização nominal dos juros adiciona mais de R$ 1,2 trilhão ao estoque da dívida em um ano. Além disso, cortes fiscais contracionistas tendem a desacelerar o PIB (o denominador da fração), anulando parte do ganho primário.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono">
+                        <span class="text-slate-400">Fator Dominante DBGG:</span>
+                        <span class="px-2 py-1 rounded bg-sky-500/10 text-sky-300 font-bold">Juros Reais (r) &gt; PIB (g)</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Simulador Interativo: "A Conta Fecha?" -->
+    <section id="simulador" class="py-16 sm:py-24 bg-gradient-to-b from-slate-950 via-slate-900/80 to-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+                <div>
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 font-mono text-xs font-semibold mb-3">
+                        MODELO INTERATIVO • PROJEÇÃO 2027
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-bold">Simulador Fiscal: "A Conta Fecha em 2027?"</h2>
+                    <p class="text-sm sm:text-base text-slate-400 mt-2 max-w-2xl">
+                        Ajuste os parâmetros macroeconômicos abaixo para testar o impacto real do pacote do PLP 299/2026 frente à dinâmica de juros da Selic, crescimento do PIB e espaço orçamentário.
+                    </p>
+                </div>
+
+                <!-- Botões de Cenários Pré-definidos -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="applyPreset('oficial')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-sky-300 transition">
+                        Cenário Oficial (PLP 299/2026)
+                    </button>
+                    <button onclick="applyPreset('choque')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-rose-300 transition">
+                        Choque de Juros (Selic 15%)
+                    </button>
+                    <button onclick="applyPreset('crescimento')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-emerald-300 transition">
+                        Crescimento sem Austeridade
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Coluna de Controles (Sliders) -->
+                <div class="lg:col-span-5 glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">Parâmetros da Simulação</h3>
+
+                    <!-- Slider 1: Ajuste Primário -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="slider-ajuste" class="text-sm font-medium text-slate-300">Ajuste / Corte Primário (PLP 299)</label>
+                            <span id="label-ajuste" class="font-mono text-sm font-bold text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded">R$ 60,0 bi</span>
+                        </div>
+                        <input type="range" id="slider-ajuste" min="0" max="100" step="1" value="60" oninput="runSimulation()">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500 mt-1">
+                            <span>R$ 0 bi</span>
+                            <span>R$ 50 bi</span>
+                            <span>R$ 100 bi</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 2: Taxa de Juros Nominal -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="slider-juros" class="text-sm font-medium text-slate-300">Taxa Média de Juros (Selic / Dívida)</label>
+                            <span id="label-juros" class="font-mono text-sm font-bold text-rose-400 bg-rose-400/10 px-2.5 py-0.5 rounded">13,75% a.a.</span>
+                        </div>
+                        <input type="range" id="slider-juros" min="8.0" max="16.0" step="0.25" value="13.75" oninput="runSimulation()">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500 mt-1">
+                            <span>8,0%</span>
+                            <span>12,0%</span>
+                            <span>16,0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 3: Crescimento Real do PIB -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="slider-pib" class="text-sm font-medium text-slate-300">Crescimento Real do PIB</label>
+                            <span id="label-pib" class="font-mono text-sm font-bold text-emerald-400 bg-emerald-400/10 px-2.5 py-0.5 rounded">+2,0% a.a.</span>
+                        </div>
+                        <input type="range" id="slider-pib" min="-1.0" max="4.5" step="0.1" value="2.0" oninput="runSimulation()">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500 mt-1">
+                            <span>-1,0%</span>
+                            <span>+1,8%</span>
+                            <span>+4,5%</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 4: Inflação (IPCA) -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="slider-ipca" class="text-sm font-medium text-slate-300">Inflação Projetada (IPCA)</label>
+                            <span id="label-ipca" class="font-mono text-sm font-bold text-sky-400 bg-sky-400/10 px-2.5 py-0.5 rounded">4,2% a.a.</span>
+                        </div>
+                        <input type="range" id="slider-ipca" min="3.0" max="7.0" step="0.1" value="4.2" oninput="runSimulation()">
+                        <div class="flex justify-between text-[11px] font-mono text-slate-500 mt-1">
+                            <span>3,0%</span>
+                            <span>5,0%</span>
+                            <span>7,0%</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-950/90 border border-slate-800 text-xs text-slate-400 leading-relaxed">
+                        <strong>Premissas-base do modelo:</strong> Estoque inicial da DBGG estimado em <strong>R$ 11,114 trilhões</strong> (~82,9% do PIB nominal de R$ 13,402 trilhões) e déficit primário inercial pré-ajuste de R$ 73 bilhões.
+                    </div>
+                </div>
+
+                <!-- Coluna de Resultados em Tempo Real -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- KPIs Principais da Simulação -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Juros Nominais Gerados -->
+                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-rose-500">
+                            <span class="text-xs font-mono uppercase text-slate-400">Juros Nominais Anuais da Dívida</span>
+                            <div id="res-juros-anuais" class="text-2xl sm:text-3xl font-bold font-mono text-rose-400 mt-1">R$ 1.306,3 Bi</div>
+                            <p id="res-juros-comparacao" class="text-xs text-slate-400 mt-2">
+                                Os juros gerados no ano são <strong>21,8x maiores</strong> que o ajuste de R$ 60,0 bi.
+                            </p>
+                        </div>
+
+                        <!-- Variação da DBGG/PIB -->
+                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-sky-400">
+                            <span class="text-xs font-mono uppercase text-slate-400">Variação Estimada DBGG / PIB</span>
+                            <div id="res-dbgg-var" class="text-2xl sm:text-3xl font-bold font-mono text-rose-400 mt-1">+3,28 p.p.</div>
+                            <p id="res-dbgg-nova" class="text-xs text-slate-400 mt-2">
+                                Razão DBGG/PIB vai de 78,5% para <strong>81,78% do PIB</strong>.
+                            </p>
+                        </div>
+
+                        <!-- Tempo Pago do Serviço da Dívida -->
+                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-amber-400">
+                            <span class="text-xs font-mono uppercase text-slate-400">Cobertura do Serviço (R$ 3,485 Tri)</span>
+                            <div id="res-dias-divida" class="text-2xl sm:text-3xl font-bold font-mono text-amber-400 mt-1">6 dias e 7 horas</div>
+                            <p id="res-perc-servico" class="text-xs text-slate-400 mt-2">
+                                O corte cobre apenas <strong>1,72%</strong> do orçamento financeiro da dívida em 2027.
+                            </p>
+                        </div>
+
+                        <!-- Espaço Real para Políticas Públicas -->
+                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-purple-400">
+                            <span class="text-xs font-mono uppercase text-slate-400">Espaço Líquido Novo p/ Políticas</span>
+                            <div id="res-espaco-politicas" class="text-2xl sm:text-3xl font-bold font-mono text-slate-200 mt-1">R$ 0,00</div>
+                            <p id="res-espaco-desc" class="text-xs text-slate-400 mt-2">
+                                Sob o teto congelado do PLP 299, R$ 60,0 bi vão integralmente para meta primária/dívida.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico Dinâmico da Simulação -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                            <h4 class="text-sm font-bold text-slate-200">Confronto Anual: Juros Gerados vs. Esforço Fiscal (em R$ Bilhões)</h4>
+                            <span id="sim-veredito-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 self-start">
+                                DÍVIDA EM TRAJETÓRIA DE ALTA
+                            </span>
+                        </div>
+                        <div class="h-56 w-full">
+                            <canvas id="simChart"></canvas>
+                        </div>
+                        <p id="sim-diagnostico" class="mt-4 text-xs sm:text-sm text-slate-300 bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 leading-relaxed">
+                            Mesmo aplicando um ajuste fiscal de <strong>R$ 60,0 bilhões</strong>, a taxa de juros nominal de <strong>13,75%</strong> gera <strong>R$ 1.306,3 bilhões</strong> em encargos financeiros. Como a taxa real de juros supera o crescimento do PIB de <strong>2,0%</strong>, a relação DBGG/PIB continua subindo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Rodapé com Fontes Oficiais -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8 border-b border-slate-800/80">
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200 mb-3">Fontes Oficiais e Referências Legislativas</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li>• <strong>Senado Federal — Atividade Legislativa:</strong> Projeto de Lei Complementar (PLP) nº 299, de 2026 (Matéria 176328), de autoria do Sen. Jaques Wagner e relatoria do Sen. Eduardo Braga.</li>
+                        <li>• <strong>Comissão Mista de Planos, Orçamentos Públicos e Fiscalização (CMO):</strong> Notas técnicas e estimativas de impacto fiscal do pacote de revisão de gastos e renúncias tributárias (PLOA 2027).</li>
+                        <li>• <strong>Lei Complementar nº 200/2023:</strong> Regime Fiscal Sustentável (Arcabouço Fiscal) e regras de gatilhos para despesas primárias.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200 mb-3">Nota Metodológica</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Os valores orçamentários do PLOA 2027 (Orçamento Total de R$ 7,239 trilhões e Serviço da Dívida de R$ 3,485 trilhões) refletem as dotações consolidadas submetidas ao Congresso Nacional. O simulador interativo utiliza a equação padrão de dinâmica da dívida pública ($\Delta d \approx \frac{r - g}{1 + g} \cdot d_{t-1} - s$), onde $r$ representa o juro real, $g$ o crescimento real do PIB e $s$ o resultado primário em proporção do PIB, para fins de visualização didática.
+                    </p>
+                </div>
+            </div>
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <span>Painel Analítico de Finanças Públicas • Dados Legislativos 2026/2027</span>
+                <span class="font-mono">PLP 299/2026 • Matéria 176328</span>
+            </div>
         </div>
     </footer>
 
-    <!-- ADD/EDIT MODAL -->
-    <div id="item-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-panel rounded-3xl max-w-2xl w-full border border-slate-700/80 shadow-2xl overflow-hidden transform transition-all my-8">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/40">
-                <h3 id="modal-title" class="text-base font-bold text-white flex items-center">
-                    <i class="fa-solid fa-plus-circle mr-2.5 text-cyan-400"></i> Adicionar Registro ao Acervo
-                </h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/60 transition-all">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Modal Form -->
-            <form id="item-form" onsubmit="saveItem(event)" class="p-6 space-y-4">
-                <input type="hidden" id="item-id">
-                
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Título da Análise / Conteúdo</label>
-                    <input type="text" id="form-title" required placeholder="Ex: Impacto dos Juros da Dívida Pública no Orçamento do Estado do RJ" 
-                        class="w-full px-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm">
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Tipo de Acervo / Mídia</label>
-                        <select id="form-type" onchange="toggleFormFields()" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm bg-slate-900/90 text-white border border-slate-700">
-                            <option value="artigo">Artigo & Análise Textual</option>
-                            <option value="video">Vídeo / Palestra (YouTube/Vimeo Embed)</option>
-                            <option value="doc">Documento / PDF (Link Direct/Drive)</option>
-                            <option value="image">Infográfico / Imagem</option>
-                            <option value="html">Snippet HTML / Gráfico Interativo</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Data da Publicação</label>
-                        <input type="date" id="form-date" required class="w-full px-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm text-slate-200">
-                    </div>
-                </div>
-
-                <!-- Dynamic Content Input Field -->
-                <div>
-                    <label id="content-label" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Texto Completo ou URL</label>
-                    <textarea id="form-content" rows="4" required placeholder="Escreva o texto completo do artigo ou cole o link..." 
-                        class="w-full px-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm font-mono focus:outline-none"></textarea>
-                    <span id="content-hint" class="text-[11px] text-slate-400 mt-1 block">Insira o texto na íntegra, link direto ou código embed.</span>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Resumo / Notas Explicativas</label>
-                    <textarea id="form-description" rows="2" placeholder="Resumo executivo do conteúdo ou contexto apresentados por Paulo Lindesay..." 
-                        class="w-full px-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm focus:outline-none"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Tags Temáticas (separadas por vírgula)</label>
-                    <input type="text" id="form-tags" placeholder="Auditoria, Juros, Orçamento Federal, PEC32, Rio de Janeiro" 
-                        class="w-full px-4 py-2.5 glass-input rounded-xl text-xs sm:text-sm">
-                </div>
-
-                <!-- Form Buttons -->
-                <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-800/80">
-                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800/60 transition-all">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="bg-gradient-to-r from-petrol-600 to-cyan-500 hover:from-petrol-500 hover:to-cyan-400 text-white px-6 py-2.5 rounded-xl text-xs font-semibold shadow-lg shadow-cyan-500/20 transition-all">
-                        Salvar no Acervo
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- LIGHTBOX / DETAIL VIEW MODAL -->
-    <div id="detail-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/85 backdrop-blur-lg flex items-center justify-center p-4 sm:p-6">
-        <div class="glass-panel rounded-3xl max-w-4xl w-full border border-slate-700/80 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <!-- Header -->
-            <div class="px-6 py-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/50">
-                <div class="flex items-center space-x-3 pr-4">
-                    <span id="detail-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider flex-shrink-0"></span>
-                    <h3 id="detail-title" class="text-sm sm:text-base font-bold text-white truncate max-w-md"></h3>
-                </div>
-                <div class="flex items-center space-x-1.5 flex-shrink-0">
-                    <button id="detail-edit-btn" onclick="" class="text-slate-400 hover:text-cyan-400 p-2 rounded-lg hover:bg-slate-800/60 transition-all" title="Editar">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <button id="detail-delete-btn" onclick="" class="text-slate-400 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-800/60 transition-all" title="Excluir">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800/60 transition-all">
-                        <i class="fa-solid fa-xmark text-lg"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Body Viewer -->
-            <div class="p-6 overflow-y-auto space-y-5 flex-grow">
-                <!-- Media Display Box -->
-                <div id="detail-media-container" class="w-full bg-slate-950/80 rounded-2xl overflow-hidden border border-slate-800/80 flex items-center justify-center min-h-[220px]">
-                    <!-- Injected dynamically -->
-                </div>
-
-                <!-- Metadata & Info -->
-                <div class="space-y-4">
-                    <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2 border-b border-slate-800/60 pb-3">
-                        <span id="detail-date" class="flex items-center font-medium"><i class="fa-regular fa-calendar mr-1.5 text-cyan-400"></i></span>
-                        <div id="detail-tags" class="flex flex-wrap gap-1.5"></div>
-                    </div>
-
-                    <div>
-                        <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Resumo / Notas Explicativas</h4>
-                        <p id="detail-description" class="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line bg-slate-900/40 p-4 rounded-xl border border-slate-800/60"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 glass-panel px-5 py-3 rounded-2xl border border-cyan-400/30 flex items-center space-x-3 shadow-2xl">
-        <i id="toast-icon" class="fa-solid fa-circle-check text-cyan-400 text-lg"></i>
-        <span id="toast-message" class="text-xs sm:text-sm font-semibold text-white"></span>
-    </div>
-
-    <!-- Application Logic Javascript -->
+    <!-- Lógica Interativa (Gráficos e Simulador) -->
     <script>
-        // Default Sample Data (Acervo Paulo Lindesay - Auditoria Cidadã da Dívida Núcleo RJ)
-        const defaultItems = [
-            {
-                id: "1",
-                title: "A Dívida Pública e o Estrangulamento dos Serviços Públicos no Brasil",
-                type: "artigo",
-                content: `O Sistema da Dívida Pública atua como um mecanismo constante de transferência de recursos públicos para o setor financeiro privado. 
+        // 1. Alternância de Estimativas no Raio-X (Base R$ 50 bi vs Teto R$ 60 bi)
+        function setEstimateMode(mode) {
+            const btnMax = document.getElementById('btn-est-max');
+            const btnMin = document.getElementById('btn-est-min');
 
-No Brasil, quase metade de todo o Orçamento Geral da União é destinado anualmente para o pagamento de juros e amortizações da dívida pública, sem que haja uma auditoria integral com participação da sociedade, conforme prevê a Constituição Federal de 1988.
-
-Este cenário resulta na escassez de recursos para áreas essenciais como Saúde, Educação, Segurança e Infraestrutura, prejudicando diretamente os servidores públicos e a população em geral. No estado do Rio de Janeiro, o regime de recuperação fiscal aprofunda o sucateamento dos serviços básicos em nome do pagamento de juros questionáveis.`,
-                description: "Análise detalhada por Paulo Lindesay sobre o impacto da dívida pública no financiamento dos serviços essenciais e na desvalorização dos servidores públicos.",
-                tags: ["Orçamento Federal", "Auditoria Cidadã", "Serviços Públicos", "Rio de Janeiro"],
-                date: "2024-03-10"
-            },
-            {
-                id: "2",
-                title: "Palestra: Entendendo o Gráfico do Orçamento e a Mitologia Fiscal",
-                type: "video",
-                content: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                description: "Exposição técnica conduzida por Paulo Lindesay (Núcleo RJ) desmistificando o orçamento federal e demonstrando a fatia real consumida pelos juros e amortizações da dívida.",
-                tags: ["Palestra", "Vídeo", "Orçamento", "Juros"],
-                date: "2024-02-18"
-            },
-            {
-                id: "3",
-                title: "Infográfico: Distribuição do Orçamento Geral da União",
-                type: "image",
-                content: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
-                description: "Gráfico comparativo evidenciando o percentual do orçamento destinado aos juros da dívida em contraste com os investimentos sociais.",
-                tags: ["Infográfico", "Dados", "Orçamento Federal"],
-                date: "2024-01-25"
-            },
-            {
-                id: "4",
-                title: "Nota Técnica: O Impacto do Regime de Recuperação Fiscal no Estado do RJ",
-                type: "doc",
-                content: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                description: "Documento oficial do Núcleo RJ da Auditoria Cidadã analisando as cláusulas do RRF e o sequestro das receitas do estado do Rio de Janeiro.",
-                tags: ["Nota Técnica", "RRF", "Rio de Janeiro", "PDF"],
-                date: "2023-11-14"
-            },
-            {
-                id: "5",
-                title: "Painel Interativo de Juros e Amortização da Dívida",
-                type: "html",
-                content: `<div style="background: linear-gradient(135deg, #0c4a6e, #0b132b); padding: 30px; border-radius: 16px; font-family: sans-serif; color: white; border: 1px solid rgba(56, 189, 248, 0.3);">
-  <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #38bdf8; font-weight: bold;">Simulador de Impacto Orçamentário</h3>
-  <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 20px;">Estimativa mensal de consumo de recursos públicos pelo refinanciamento e juros da dívida.</p>
-  <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; font-size: 13px;">
-    <span>Destinado à Dívida:</span>
-    <strong style="color: #38bdf8;">~45% do Orçamento</strong>
-  </div>
-  <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; font-size: 13px; margin-top: 10px;">
-    <span>Saúde + Educação:</span>
-    <strong style="color: #f43f5e;">~8% do Orçamento</strong>
-  </div>
-</div>`,
-                description: "Código/Widget HTML interativo para demonstração em apresentações e debates públicos.",
-                tags: ["Simulador", "HTML", "Gráfico Interativo"],
-                date: "2024-03-01"
-            }
-        ];
-
-        // App State Variables
-        let items = [];
-        let currentTab = 'all';
-        let activeTag = null;
-
-        // Initialize App
-        document.addEventListener("DOMContentLoaded", () => {
-            loadItems();
-            renderTagCloud();
-            renderItems();
-            setFormDefaultDate();
-        });
-
-        // Local Storage Logic
-        function loadItems() {
-            const saved = localStorage.getItem('paulo_lindesay_divida_archive');
-            if (saved) {
-                try {
-                    items = JSON.parse(saved);
-                } catch (e) {
-                    items = [...defaultItems];
-                }
+            if (mode === 'max') {
+                btnMax.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-slate-950 transition';
+                btnMin.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition';
+                document.getElementById('val-pilar-1').textContent = 'R$ 18,3 bi';
+                document.getElementById('val-pilar-2').textContent = 'R$ 15,0 bi';
+                document.getElementById('val-pilar-3').textContent = 'R$ 18,3 bi';
+                document.getElementById('val-pilar-4').textContent = 'R$ 4,5 bi';
+                document.getElementById('val-pilar-5').textContent = 'R$ 3,9 bi';
             } else {
-                items = [...defaultItems];
-                saveToStorage();
+                btnMin.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-slate-950 transition';
+                btnMax.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition';
+                document.getElementById('val-pilar-1').textContent = 'R$ 12,8 bi';
+                document.getElementById('val-pilar-2').textContent = 'R$ 15,0 bi';
+                document.getElementById('val-pilar-3').textContent = 'R$ 12,8 bi';
+                document.getElementById('val-pilar-4').textContent = 'R$ 4,5 bi';
+                document.getElementById('val-pilar-5').textContent = 'R$ 4,9 bi';
             }
         }
 
-        function saveToStorage() {
-            localStorage.setItem('paulo_lindesay_divida_archive', JSON.stringify(items));
-        }
+        // 2. Gráfico de Escala Real vs Zoom nos Componentes
+        let scaleChart;
+        const scaleData = {
+            labels: [
+                'Orçamento Total (PLOA 2027)',
+                'Demais Despesas (Saúde, Prev., Educ., etc.)',
+                'Serviço da Dívida Pública (Juros + Rolagem)',
+                'Ajuste Teto PLP 299/2026',
+                'Impacto Líquido Estimado (Média)'
+            ],
+            values: [7239, 3754, 3485, 60, 48.5],
+            colors: [
+                'rgba(56, 189, 248, 0.85)',
+                'rgba(16, 185, 129, 0.85)',
+                'rgba(244, 63, 94, 0.90)',
+                'rgba(251, 191, 36, 0.95)',
+                'rgba(168, 85, 247, 0.90)'
+            ]
+        };
 
-        function setFormDefaultDate() {
-            document.getElementById('form-date').value = new Date().toISOString().split('T')[0];
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('settings-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.fa-sliders') && !event.target.closest('button')?.contains(event.target.querySelector('.fa-sliders'))) {
-                const menu = document.getElementById('settings-menu');
-                if (menu && !menu.classList.contains('hidden')) {
-                    menu.classList.add('hidden');
-                }
-            }
-        }
-
-        // Navigation Tab Logic
-        function setTab(tab) {
-            currentTab = tab;
-            activeTag = null;
-            
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.classList.remove('bg-petrol-600', 'text-white', 'border', 'border-cyan-400/30');
-                btn.classList.add('text-slate-400');
-            });
-            const activeNav = document.getElementById(`tab-${tab}`);
-            if (activeNav) {
-                activeNav.classList.add('bg-petrol-600', 'text-white', 'border', 'border-cyan-400/30');
-                activeNav.classList.remove('text-slate-400');
-            }
-
-            renderItems();
-        }
-
-        // Filter Tag Cloud Logic
-        function renderTagCloud() {
-            const tagSet = new Set();
-            items.forEach(item => {
-                if (Array.isArray(item.tags)) {
-                    item.tags.forEach(tag => tagSet.add(tag.trim()));
-                }
-            });
-
-            const tagContainer = document.getElementById('tag-cloud');
-            tagContainer.innerHTML = '';
-
-            const allBadge = document.createElement('button');
-            allBadge.className = `px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${!activeTag ? 'bg-petrol-600 text-white border border-cyan-400/30' : 'glass-panel text-slate-400 hover:text-white'}`;
-            allBadge.innerText = 'Todas';
-            allBadge.onclick = () => filterByTag(null);
-            tagContainer.appendChild(allBadge);
-
-            tagSet.forEach(tag => {
-                if(!tag) return;
-                const badge = document.createElement('button');
-                badge.className = `px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${activeTag === tag ? 'bg-cyan-500 text-white' : 'glass-panel text-slate-400 hover:text-white'}`;
-                badge.innerText = `#${tag}`;
-                badge.onclick = () => filterByTag(tag);
-                tagContainer.appendChild(badge);
-            });
-        }
-
-        function filterByTag(tag) {
-            activeTag = tag;
-            renderTagCloud();
-            renderItems();
-        }
-
-        // Render Grid Items
-        function renderItems() {
-            const grid = document.getElementById('items-grid');
-            const emptyState = document.getElementById('empty-state');
-            const searchQuery = document.getElementById('search-input').value.toLowerCase();
-
-            grid.innerHTML = '';
-
-            const filtered = items.filter(item => {
-                if (currentTab !== 'all' && item.type !== currentTab) return false;
-                if (activeTag && (!item.tags || !item.tags.includes(activeTag))) return false;
-
-                if (searchQuery) {
-                    const inTitle = item.title.toLowerCase().includes(searchQuery);
-                    const inDesc = item.description.toLowerCase().includes(searchQuery);
-                    const inContent = item.content.toLowerCase().includes(searchQuery);
-                    const inTags = item.tags && item.tags.some(t => t.toLowerCase().includes(searchQuery));
-                    return inTitle || inDesc || inContent || inTags;
-                }
-
-                return true;
-            });
-
-            if (filtered.length === 0) {
-                grid.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                emptyState.classList.add('flex');
-                return;
-            }
-
-            grid.classList.remove('hidden');
-            emptyState.classList.add('hidden');
-            emptyState.classList.remove('flex');
-
-            filtered.forEach(item => {
-                const card = createCardElement(item);
-                grid.appendChild(card);
-            });
-        }
-
-        // Create Card Element
-        function createCardElement(item) {
-            const card = document.createElement('div');
-            card.className = 'glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group';
-            card.onclick = () => openDetailModal(item.id);
-
-            const typeConfig = getTypeConfig(item.type);
-
-            let mediaPreviewHtml = '';
-            if (item.type === 'image') {
-                mediaPreviewHtml = `
-                    <div class="w-full h-44 bg-slate-950 overflow-hidden relative">
-                        <img src="${item.content}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                            onerror="this.onerror=null; this.src='https://placehold.co/600x400/0b132b/38bdf8?text=Imagem+Indispon%C3%ADvel';">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60"></div>
-                    </div>`;
-            } else if (item.type === 'video') {
-                mediaPreviewHtml = `
-                    <div class="w-full h-44 bg-slate-950 flex flex-col items-center justify-center relative overflow-hidden group border-b border-slate-800">
-                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-400/40 flex items-center justify-center group-hover:scale-110 transition-all shadow-lg shadow-cyan-500/20">
-                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
-                        </div>
-                        <span class="text-[11px] text-slate-400 mt-2 font-mono">Vídeo / Palestra</span>
-                    </div>`;
-            } else if (item.type === 'artigo') {
-                mediaPreviewHtml = `
-                    <div class="w-full h-44 bg-slate-900/80 p-4 border-b border-slate-800/80 flex flex-col justify-between">
-                        <div class="text-xs text-slate-300 font-sans line-clamp-5 leading-relaxed opacity-90">${escapeHtml(item.content)}</div>
-                        <span class="text-[10px] text-cyan-400 font-semibold"><i class="fa-solid fa-align-left mr-1"></i> Ler Artigo Completo</span>
-                    </div>`;
-            } else if (item.type === 'html') {
-                mediaPreviewHtml = `
-                    <div class="w-full h-44 bg-slate-950 p-4 font-mono text-[11px] text-cyan-300 overflow-hidden relative border-b border-slate-800">
-                        <div class="absolute top-2 right-2 text-slate-500 text-[10px]"><i class="fa-solid fa-code"></i> HTML</div>
-                        <div class="opacity-70 pointer-events-none line-clamp-5 select-none">${escapeHtml(item.content)}</div>
-                    </div>`;
-            } else {
-                mediaPreviewHtml = `
-                    <div class="w-full h-44 bg-slate-900/60 flex flex-col items-center justify-center p-6 text-center border-b border-slate-800">
-                        <i class="${typeConfig.icon} text-4xl text-cyan-400 mb-2"></i>
-                        <span class="text-xs text-slate-300 font-medium truncate max-w-full px-4">${item.content}</span>
-                    </div>`;
-            }
-
-            const tagsHtml = (item.tags || []).map(t => 
-                `<span class="text-[10px] bg-slate-800/90 text-cyan-300 px-2 py-0.5 rounded-md border border-slate-700/60">#${t}</span>`
-            ).join(' ');
-
-            card.innerHTML = `
-                ${mediaPreviewHtml}
-                <div class="p-5 flex flex-col flex-grow">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${typeConfig.badgeClass}">
-                            <i class="${typeConfig.icon} mr-1"></i> ${typeConfig.label}
-                        </span>
-                        <span class="text-[11px] text-slate-400 font-medium">${formatDate(item.date)}</span>
-                    </div>
-                    <h3 class="font-bold text-white text-sm sm:text-base mb-1.5 group-hover:text-cyan-300 transition-colors line-clamp-2 leading-snug">${item.title}</h3>
-                    <p class="text-xs text-slate-400 line-clamp-2 mb-4 flex-grow">${item.description || 'Sem resumo cadastrado.'}</p>
-                    <div class="flex flex-wrap gap-1 pt-2.5 border-t border-slate-800/80">
-                        ${tagsHtml}
-                    </div>
-                </div>
-            `;
-
-            return card;
-        }
-
-        // Config Helpers for Media Types
-        function getTypeConfig(type) {
-            switch(type) {
-                case 'artigo': 
-                    return { label: 'Artigo / Análise', icon: 'fa-solid fa-newspaper', badgeClass: 'bg-sky-500/20 text-sky-300 border border-sky-500/30' };
-                case 'video': 
-                    return { label: 'Vídeo / Palestra', icon: 'fa-solid fa-video', badgeClass: 'bg-purple-500/20 text-purple-300 border border-purple-500/30' };
-                case 'image': 
-                    return { label: 'Infográfico', icon: 'fa-solid fa-chart-pie', badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' };
-                case 'html': 
-                    return { label: 'HTML / Code', icon: 'fa-solid fa-code', badgeClass: 'bg-amber-500/20 text-amber-300 border border-amber-500/30' };
-                default: 
-                    return { label: 'Documento PDF', icon: 'fa-solid fa-file-pdf', badgeClass: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' };
-            }
-        }
-
-        // Modal Functions
-        function openModal(mode, itemId = null) {
-            const modal = document.getElementById('item-modal');
-            const form = document.getElementById('item-form');
-            const modalTitle = document.getElementById('modal-title');
-
-            form.reset();
-            setFormDefaultDate();
-
-            if (mode === 'edit' && itemId) {
-                const item = items.find(i => i.id === itemId);
-                if (item) {
-                    document.getElementById('item-id').value = item.id;
-                    document.getElementById('form-title').value = item.title;
-                    document.getElementById('form-type').value = item.type;
-                    document.getElementById('form-content').value = item.content;
-                    document.getElementById('form-description').value = item.description || '';
-                    document.getElementById('form-tags').value = (item.tags || []).join(', ');
-                    document.getElementById('form-date').value = item.date;
-
-                    modalTitle.innerHTML = `<i class="fa-solid fa-pen-to-square mr-2.5 text-cyan-400"></i> Editar Registro`;
-                }
-            } else {
-                document.getElementById('item-id').value = '';
-                modalTitle.innerHTML = `<i class="fa-solid fa-plus-circle mr-2.5 text-cyan-400"></i> Adicionar Registro ao Acervo`;
-            }
-
-            toggleFormFields();
-            modal.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('item-modal').classList.add('hidden');
-        }
-
-        function toggleFormFields() {
-            const type = document.getElementById('form-type').value;
-            const contentLabel = document.getElementById('content-label');
-            const contentHint = document.getElementById('content-hint');
-            const contentInput = document.getElementById('form-content');
-
-            if (type === 'artigo') {
-                contentLabel.innerText = 'Texto Completo do Artigo';
-                contentHint.innerText = 'Insira o texto na íntegra para leitura e arquivamento.';
-                contentInput.placeholder = 'Escreva ou cole a análise na íntegra aqui...';
-            } else if (type === 'image') {
-                contentLabel.innerText = 'URL do Infográfico / Imagem';
-                contentHint.innerText = 'Cole a URL direta da imagem gráfica.';
-                contentInput.placeholder = 'https://exemplo.com/grafico.png';
-            } else if (type === 'video') {
-                contentLabel.innerText = 'URL / Embed de Vídeo';
-                contentHint.innerText = 'Link Embed do YouTube (ex: https://www.youtube.com/embed/...) ou fonte de vídeo.';
-                contentInput.placeholder = 'https://www.youtube.com/embed/...';
-            } else if (type === 'html') {
-                contentLabel.innerText = 'Código HTML / Widget Interativo';
-                contentHint.innerText = 'Insira o código HTML/CSS/JS renderizável.';
-                contentInput.placeholder = '<div class="widget">...</div>';
-            } else {
-                contentLabel.innerText = 'Link / URL do PDF ou Documento';
-                contentHint.innerText = 'Link direto para download ou visualização em nuvem.';
-                contentInput.placeholder = 'https://exemplo.com/documento.pdf';
-            }
-        }
-
-        // Save Item
-        function saveItem(e) {
-            e.preventDefault();
-
-            const id = document.getElementById('item-id').value;
-            const title = document.getElementById('form-title').value.trim();
-            const type = document.getElementById('form-type').value;
-            const content = document.getElementById('form-content').value.trim();
-            const description = document.getElementById('form-description').value.trim();
-            const tagsInput = document.getElementById('form-tags').value;
-            const date = document.getElementById('form-date').value;
-
-            const tags = tagsInput.split(',')
-                .map(t => t.trim())
-                .filter(t => t.length > 0);
-
-            if (id) {
-                const index = items.findIndex(i => i.id === id);
-                if (index !== -1) {
-                    items[index] = { id, title, type, content, description, tags, date };
-                    showToast('Registro atualizado com sucesso!');
-                }
-            } else {
-                const newItem = {
-                    id: Date.now().toString(),
-                    title,
-                    type,
-                    content,
-                    description,
-                    tags,
-                    date
-                };
-                items.unshift(newItem);
-                showToast('Novo registro adicionado ao acervo!');
-            }
-
-            saveToStorage();
-            renderTagCloud();
-            renderItems();
-            closeModal();
-            closeDetailModal();
-        }
-
-        // Delete Item
-        function deleteItem(id) {
-            if (confirm('Tem certeza que deseja excluir este registro do acervo?')) {
-                items = items.filter(i => i.id !== id);
-                saveToStorage();
-                renderTagCloud();
-                renderItems();
-                closeDetailModal();
-                showToast('Registro removido.', 'info');
-            }
-        }
-
-        // Lightbox / Detail View Functions
-        function openDetailModal(id) {
-            const item = items.find(i => i.id === id);
-            if (!item) return;
-
-            const modal = document.getElementById('detail-modal');
-            const typeConfig = getTypeConfig(item.type);
-
-            document.getElementById('detail-title').innerText = item.title;
-            document.getElementById('detail-date').innerHTML = `<i class="fa-regular fa-calendar mr-1.5 text-cyan-400"></i> Data: ${formatDate(item.date)}`;
-            document.getElementById('detail-description').innerText = item.description || 'Sem resumo cadastrado.';
-
-            const badge = document.getElementById('detail-badge');
-            badge.className = `px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${typeConfig.badgeClass}`;
-            badge.innerHTML = `<i class="${typeConfig.icon} mr-1"></i> ${typeConfig.label}`;
-
-            document.getElementById('detail-edit-btn').onclick = () => openModal('edit', item.id);
-            document.getElementById('detail-delete-btn').onclick = () => deleteItem(item.id);
-
-            const tagsContainer = document.getElementById('detail-tags');
-            tagsContainer.innerHTML = (item.tags || []).map(t => 
-                `<span class="text-xs bg-slate-800 text-cyan-300 px-2.5 py-0.5 rounded-md border border-slate-700">#${t}</span>`
-            ).join('');
-
-            const mediaContainer = document.getElementById('detail-media-container');
-            mediaContainer.innerHTML = '';
-
-            if (item.type === 'artigo') {
-                mediaContainer.innerHTML = `
-                    <div class="p-6 text-slate-200 text-xs sm:text-sm font-sans leading-relaxed whitespace-pre-line max-h-[50vh] overflow-y-auto w-full">
-                        ${escapeHtml(item.content)}
-                    </div>`;
-            } else if (item.type === 'image') {
-                mediaContainer.innerHTML = `<img src="${item.content}" class="max-h-[55vh] w-auto max-w-full object-contain rounded-lg" onerror="this.src='https://placehold.co/800x500/0b132b/38bdf8?text=Erro+ao+carregar+imagem'">`;
-            } else if (item.type === 'video') {
-                mediaContainer.innerHTML = `<iframe src="${item.content}" class="w-full aspect-video rounded-lg" frameborder="0" allowfullscreen></iframe>`;
-            } else if (item.type === 'html') {
-                const iframe = document.createElement('iframe');
-                iframe.className = "w-full min-h-[300px] bg-white rounded-lg border-0";
-                mediaContainer.appendChild(iframe);
-                
-                const doc = iframe.contentWindow.document;
-                doc.open();
-                doc.write(item.content);
-                doc.close();
-            } else {
-                mediaContainer.innerHTML = `
-                    <div class="text-center p-8">
-                        <i class="fa-solid fa-file-pdf text-5xl text-cyan-400 mb-3"></i>
-                        <h4 class="text-sm font-bold text-white mb-2">Documento / PDF</h4>
-                        <p class="text-xs text-slate-400 mb-5 max-w-md mx-auto break-all font-mono bg-slate-900 p-2 rounded border border-slate-800">${item.content}</p>
-                        <a href="${item.content}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center bg-petrol-600 hover:bg-petrol-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-cyan-500/20">
-                            <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Abrir Documento em Nova Aba
-                        </a>
-                    </div>`;
-            }
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeDetailModal() {
-            document.getElementById('detail-modal').classList.add('hidden');
-            document.getElementById('detail-media-container').innerHTML = '';
-        }
-
-        // Export & Import Data Features
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `acervo_divida_paulo_lindesay_${new Date().toISOString().split('T')[0]}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showToast('Backup JSON exportado!');
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported)) {
-                        items = imported;
-                        saveToStorage();
-                        renderTagCloud();
-                        renderItems();
-                        showToast('Acervo importado com sucesso!');
-                    } else {
-                        alert('Formato JSON inválido.');
+        function initScaleChart() {
+            const ctx = document.getElementById('scaleComparisonChart').getContext('2d');
+            scaleChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: scaleData.labels,
+                    datasets: [{
+                        label: 'Valor em R$ Bilhões',
+                        data: scaleData.values,
+                        backgroundColor: scaleData.colors,
+                        borderColor: scaleData.colors.map(c => c.replace('0.85', '1').replace('0.90', '1').replace('0.95', '1')),
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        barPercentage: 0.65
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#cbd5e1',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    if (val >= 1000) {
+                                        return ` R$ ${(val / 1000).toFixed(3).replace('.', ',')} Trilhões (R$ ${val.toLocaleString('pt-BR')} Bi)`;
+                                    }
+                                    return ` R$ ${val.toFixed(1).replace('.', ',')} Bilhões`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            grid: { color: 'rgba(51, 65, 85, 0.35)' },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { family: 'JetBrains Mono', size: 11 },
+                                callback: function(value) {
+                                    if (value >= 1000) return 'R$ ' + (value / 1000).toFixed(1) + ' Tri';
+                                    return 'R$ ' + value + ' Bi';
+                                }
+                            }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#e2e8f0',
+                                font: { family: 'Inter', size: 12, weight: '600' }
+                            }
+                        }
                     }
-                } catch (err) {
-                    alert('Erro ao ler JSON: ' + err.message);
                 }
-            };
-            reader.readAsText(file);
+            });
         }
 
-        function resetData() {
-            if (confirm('Restaurar o acervo com os registros padrões de Paulo Lindesay?')) {
-                items = [...defaultItems];
-                saveToStorage();
-                renderTagCloud();
-                renderItems();
-                showToast('Dados restaurados para o padrão.');
-            }
-        }
+        function updateScaleChart(mode) {
+            const btnReal = document.getElementById('btn-scale-real');
+            const btnZoom = document.getElementById('btn-scale-zoom');
+            const caption = document.getElementById('scale-caption');
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
-            const toastIcon = document.getElementById('toast-icon');
-
-            toastMsg.innerText = message;
-            if (type === 'info') {
-                toastIcon.className = 'fa-solid fa-circle-info text-amber-400 text-lg';
+            if (mode === 'real') {
+                btnReal.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-rose-500 text-white shadow-lg transition';
+                btnZoom.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition';
+                scaleChart.options.scales.x.type = 'linear';
+                caption.innerHTML = `
+                    <span><strong>Leitura na Escala Real:</strong> A barra do ajuste do PLP 299/2026 (R$ 60 bi) representa <strong>1,72%</strong> do Serviço da Dívida (R$ 3,485 tri) e <strong>0,83%</strong> do Orçamento Total da União (R$ 7,239 tri).</span>
+                    <span class="font-mono text-amber-400 shrink-0">Proporção: 1 : 58 (Ajuste vs Dívida)</span>
+                `;
             } else {
-                toastIcon.className = 'fa-solid fa-circle-check text-cyan-400 text-lg';
+                btnZoom.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-sky-500 text-slate-950 shadow-lg transition';
+                btnReal.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition';
+                scaleChart.options.scales.x.type = 'logarithmic';
+                caption.innerHTML = `
+                    <span><strong>Leitura em Escala Logarítmica (Zoom):</strong> Permite enxergar simultaneamente ordens de grandeza distintas (dezenas de bilhões vs. trilhões), destacando cada componente do orçamento.</span>
+                    <span class="font-mono text-sky-400 shrink-0">Escala Log10 Ativa</span>
+                `;
+            }
+            scaleChart.update();
+        }
+
+        // 3. Simulador Interativo "A Conta Fecha?"
+        let simChart;
+
+        function initSimChart() {
+            const ctx = document.getElementById('simChart').getContext('2d');
+            simChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Juros Nominais Gerados (Estoque)', 'Crescimento Nominal do PIB', 'Ajuste Fiscal (PLP 299)'],
+                    datasets: [{
+                        label: 'R$ Bilhões no Ano',
+                        data: [1306.3, 760.3, 60.0],
+                        backgroundColor: [
+                            'rgba(244, 63, 94, 0.85)',
+                            'rgba(16, 185, 129, 0.85)',
+                            'rgba(251, 191, 36, 0.90)'
+                        ],
+                        borderRadius: 8,
+                        barPercentage: 0.55
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (ctx) => ` R$ ${ctx.raw.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Bilhões`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(51, 65, 85, 0.35)' },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { family: 'JetBrains Mono', size: 11 },
+                                callback: (v) => 'R$ ' + v + ' Bi'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#e2e8f0',
+                                font: { family: 'Inter', size: 11, weight: '600' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function applyPreset(preset) {
+            const sAjuste = document.getElementById('slider-ajuste');
+            const sJuros = document.getElementById('slider-juros');
+            const sPib = document.getElementById('slider-pib');
+            const sIpca = document.getElementById('slider-ipca');
+
+            if (preset === 'oficial') {
+                sAjuste.value = 60;
+                sJuros.value = 13.75;
+                sPib.value = 2.0;
+                sIpca.value = 4.2;
+            } else if (preset === 'choque') {
+                sAjuste.value = 60;
+                sJuros.value = 15.0;
+                sPib.value = 1.1;
+                sIpca.value = 5.0;
+            } else if (preset === 'crescimento') {
+                sAjuste.value = 15;
+                sJuros.value = 9.5;
+                sPib.value = 3.8;
+                sIpca.value = 3.8;
+            }
+            runSimulation();
+        }
+
+        function runSimulation() {
+            const ajusteBi = parseFloat(document.getElementById('slider-ajuste').value);
+            const jurosNom = parseFloat(document.getElementById('slider-juros').value) / 100;
+            const pibReal = parseFloat(document.getElementById('slider-pib').value) / 100;
+            const ipca = parseFloat(document.getElementById('slider-ipca').value) / 100;
+
+            // Atualiza rótulos dos sliders
+            document.getElementById('label-ajuste').textContent = `R$ ${ajusteBi.toFixed(1).replace('.', ',')} bi`;
+            document.getElementById('label-juros').textContent = `${(jurosNom * 100).toFixed(2).replace('.', ',')}% a.a.`;
+            const pibSign = pibReal >= 0 ? '+' : '';
+            document.getElementById('label-pib').textContent = `${pibSign}${(pibReal * 100).toFixed(1).replace('.', ',')}% a.a.`;
+            document.getElementById('label-ipca').textContent = `${(ipca * 100).toFixed(1).replace('.', ',')}% a.a.`;
+
+            // Parâmetros estruturais (em R$ Bilhões)
+            const estoqueDividaInicial = 9500; // R$ 9,5 trilhões
+            const pibInicial = 12100; // R$ 12,1 trilhões (~78,51% DBGG/PIB)
+            const ratioInicial = (estoqueDividaInicial / pibInicial) * 100;
+            const servicoDividaPLOA = 3485; // R$ 3,485 trilhões
+            const deficitInercial = 35; // Déficit primário antes do pacote
+
+            // Cálculos anuais
+            const jurosGeradosBi = estoqueDividaInicial * jurosNom;
+            const resultadoPrimarioBi = -deficitInercial + ajusteBi; // positivo = superávit
+            const estoqueDividaFinal = estoqueDividaInicial + jurosGeradosBi - resultadoPrimarioBi;
+
+            // Crescimento nominal do PIB
+            const crescimentoNominalPib = (1 + pibReal) * (1 + ipca) - 1;
+            const expansaoNominalPibBi = pibInicial * crescimentoNominalPib;
+            const pibFinal = pibInicial + expansaoNominalPibBi;
+
+            const ratioFinal = (estoqueDividaFinal / pibFinal) * 100;
+            const variacaoPP = ratioFinal - ratioInicial;
+
+            // Tempo pago do serviço da dívida de R$ 3,485 tri
+            const fracaoServico = ajusteBi / servicoDividaPLOA;
+            const totalHoras = fracaoServico * 365 * 24;
+            const dias = Math.floor(totalHoras / 24);
+            const horas = Math.round(totalHoras % 24);
+            const percServico = (fracaoServico * 100).toFixed(2).replace('.', ',');
+
+            // Atualização dos Cards de Resultado
+            document.getElementById('res-juros-anuais').textContent = `R$ ${jurosGeradosBi.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} Bi`;
+            if (ajusteBi > 0) {
+                const ratioJurosAjuste = (jurosGeradosBi / ajusteBi).toFixed(1).replace('.', ',');
+                document.getElementById('res-juros-comparacao').innerHTML = `Os juros gerados no ano são <strong>${ratioJurosAjuste}x maiores</strong> que o ajuste de R$ ${ajusteBi.toFixed(0)} bi.`;
+            } else {
+                document.getElementById('res-juros-comparacao').innerHTML = `Sem ajuste fiscal, toda a conta de juros incide integralmente sobre o estoque.`;
             }
 
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+            const varEl = document.getElementById('res-dbgg-var');
+            const varSign = variacaoPP >= 0 ? '+' : '';
+            varEl.textContent = `${varSign}${variacaoPP.toFixed(2).replace('.', ',')} p.p.`;
+            varEl.className = `text-2xl sm:text-3xl font-bold font-mono mt-1 ${variacaoPP > 0.05 ? 'text-rose-400' : (variacaoPP < -0.05 ? 'text-emerald-400' : 'text-amber-400')}`;
+            document.getElementById('res-dbgg-nova').innerHTML = `Razão DBGG/PIB vai de ${ratioInicial.toFixed(1).replace('.', ',')}% para <strong>${ratioFinal.toFixed(2).replace('.', ',')}% do PIB</strong>.`;
 
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
+            document.getElementById('res-dias-divida').textContent = `${dias} dia${dias !== 1 ? 's' : ''} e ${horas} hora${horas !== 1 ? 's' : ''}`;
+            document.getElementById('res-perc-servico').innerHTML = `O corte cobre apenas <strong>${percServico}%</strong> do orçamento financeiro da dívida em 2027.`;
 
-        function escapeHtml(str) {
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
+            document.getElementById('res-espaco-politicas').textContent = `R$ 0,00`;
+            document.getElementById('res-espaco-desc').innerHTML = `Sob o teto congelado do PLP 299, R$ ${ajusteBi.toFixed(0)} bi vão para meta primária/dívida, sem ampliar o teto social.`;
 
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const parts = dateString.split('-');
-            if (parts.length === 3) {
-                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            // Atualização do Gráfico e Diagnóstico
+            if (simChart) {
+                simChart.data.datasets[0].data = [
+                    parseFloat(jurosGeradosBi.toFixed(1)),
+                    parseFloat(expansaoNominalPibBi.toFixed(1)),
+                    parseFloat(ajusteBi.toFixed(1))
+                ];
+                simChart.update();
             }
-            return dateString;
+
+            const badge = document.getElementById('sim-veredito-badge');
+            const diag = document.getElementById('sim-diagnostico');
+
+            if (variacaoPP > 0.1) {
+                badge.textContent = 'DÍVIDA EM TRAJETÓRIA DE ALTA';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 self-start';
+                diag.innerHTML = `Mesmo com um ajuste fiscal de <strong>R$ ${ajusteBi.toFixed(0)} bilhões</strong>, a taxa de juros nominal de <strong>${(jurosNom * 100).toFixed(2).replace('.', ',')}%</strong> gera <strong>R$ ${jurosGeradosBi.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} bilhões</strong> em juros. Como o custo financeiro supera a expansão do PIB (${(pibReal * 100).toFixed(1).replace('.', ',')}% real), a relação DBGG/PIB sobe <strong>+${variacaoPP.toFixed(2).replace('.', ',')} p.p.</strong>`;
+            } else if (variacaoPP < -0.1) {
+                badge.textContent = 'ESTABILIZAÇÃO / QUEDA DA DBGG';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 self-start';
+                diag.innerHTML = `A relação DBGG/PIB recua <strong>${variacaoPP.toFixed(2).replace('.', ',')} p.p.</strong> impulsionada pela combinação de juros menores (<strong>${(jurosNom * 100).toFixed(2).replace('.', ',')}%</strong>) e expansão do PIB real (<strong>${(pibReal * 100).toFixed(1).replace('.', ',')}%</strong>), demonstrando o peso determinante da taxa Selic e do crescimento sobre o denominador da dívida.`;
+            } else {
+                badge.textContent = 'ESTABILIDADE MARGINAL';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 self-start';
+                diag.innerHTML = `A razão DBGG/PIB permanece praticamente estável (variação de <strong>${varSign}${variacaoPP.toFixed(2).replace('.', ',')} p.p.</strong>), equilibrando o peso dos juros de <strong>${(jurosNom * 100).toFixed(2).replace('.', ',')}%</strong> com o crescimento do PIB e o esforço primário.`;
+            }
         }
+
+        // Inicialização ao carregar a janela
+        window.onload = function() {
+            initScaleChart();
+            initSimChart();
+            runSimulation();
+        };
     </script>
 </body>
 </html>
